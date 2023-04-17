@@ -1,0 +1,118 @@
+html,body {
+     margin: 0;
+     height: 100%;
+}
+
+#container {
+     width: 100%;
+     height: 100%;
+}
+
+#container-menubar {
+     display: flex;
+     justify-content: center;
+
+     height: 60px;
+}
+
+#container-box {
+     display: flex;
+     justify-content: center;
+
+     width: 100%;
+     height: 100%;
+}
+
+.top-menubar {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+
+     width: 1240px;
+     height: 60px;
+
+     z-index: 3px;
+     position: fixed;
+
+     background-color: brown;
+}
+
+.top-logo-img {
+     width: 100px;
+     height: 40px;
+     padding-left: 40px;
+}
+
+.top-logo {
+     width: 200px;
+     height: 40px;
+}
+
+.top-login-button {
+     width: 100px;
+     height: 40px;
+     padding-right: 40px;
+}
+
+.login-button {
+     font-size: medium;
+     width: 100px;
+     height: 40px;
+
+     border-radius: 10px;
+}
+
+.left-box {
+     display: flex;
+     justify-content: center;
+
+     width: 240px;
+     height: 100%;
+
+     background-color: aqua;
+}
+
+.right-box {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+
+     width: 1000px;
+     height: 100%;
+
+     background-color: aquamarine;
+}
+
+.left-menubar {
+     display: flex;
+     justify-content: center;
+     z-index: 3px;
+     position: fixed;
+
+     margin: 30px 25px 0px 25px;
+     width: 190px;
+     height: 400px;
+     border: 1px solid wheat;
+     border-radius: 10px;
+
+     background-color: wheat;
+}
+
+.left-menus {
+     margin: auto;
+     width: 150px;
+     height: 300px;
+
+     background-color: white;
+}
+
+.menus-li-style {
+     list-style: none;
+}
+
+.contant {
+     width: 800px;
+     height: 100%;
+
+     background-color: white;
+}
