@@ -68,6 +68,12 @@ select {
      flex-direction: column;
 }
 
+.recent-text {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+}
+
 .recent-contents-div {
      width: 1000px;
      height: 100%;
