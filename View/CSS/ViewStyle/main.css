@@ -2,3 +2,84 @@ html,body {
      margin: 0;
      height: 100%;
 }
+select {
+     height: 25px;
+}
+
+.contant {
+     width: 1000px;
+     height: 100%;
+     display: flex;
+     flex-direction: column;
+}
+
+.popular-text {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+}
+
+.popular-contents {
+     width: 1000px;
+     height: 100%;
+
+     display: flex;
+     align-items: center;
+     justify-content: space-around;
+     
+     background-color: blueviolet;
+}
+
+.image-size {
+     /* margin: 30px; */
+     display: flex;
+     width: 240px;
+     height: 240px;
+}
+
+
+.search-bar {
+     width: 1000px;
+     height: 100px;
+
+     display: flex;
+     align-items: center;
+     justify-content: center;
+
+     background-color: antiquewhite;
+}
+
+.search-bar-contents {
+     width: 500px;
+
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+
+     margin: 10px;
+}
+
+.recent-contents {
+     width: 1000px;
+     height: 100%;
+     background-color: cadetblue;
+
+     display: flex;
+     flex-direction: column;
+}
+
+.recent-contents-div {
+     width: 1000px;
+     height: 100%;
+
+     display: flex;
+     align-items: stretch;
+     justify-content: center;
+}
+
+.recent-image {
+     display: flex;
+
+     width: 250px;
+     height: 250px;
+}
