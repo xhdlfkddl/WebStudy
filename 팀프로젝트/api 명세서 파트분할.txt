@@ -1,0 +1,48 @@
+-----------------------------------------------------------------------------------------------------------------------
+호진님 5
+board-controller
+delete 	/api/board/{boardNumber}	특정 게시물 삭제(파라미터)	token
+post	/api/board/comment       댓글 작성	token
+post	/api/board/like	좋아요 기능	token
+
+file-controller
+get	/file{fileName}	파일 다운로드	
+post	/file/upload	파일 업로드	
+
+-----------------------------------------------------------------------------------------------------------------------
+태영님 5
+board-controller
+get	/api/board/liket/{boardNumber} 좋아요한 게시물 가져오기(파라미터)      token
+post	/api/board	게시물 작성 token
+patch	/api/board	특정 게시물 수정	token
+
+auth-controller
+post	/auth/sign-in 	로그인
+post	/auth/sign-up	회원가입
+
+-----------------------------------------------------------------------------------------------------------------------
+문일님 5
+board-controller
+get	/api/board/{boardNumber}	특정 게시물 가져오기(파라미터)
+get	/api/board/top15-sarch-word    인기 검색 리스트 가져오기
+get	/api/board/top3-list	좋아요가 많은 게시물 3개 가져오기
+
+main-controller
+get	/api	
+post	/api/send-mail
+
+-----------------------------------------------------------------------------------------------------------------------
+나 6
+board-controller
+get	/api/board/list	전체 게시물 가져오기
+get	/api/board/my-list		본인 작성 게시물 리스트 가져오기	token
+
+user-controller
+get	/api/user		유저 정보 불러오기	4
+patch	/api/user/profile 	유저 프로필 url수정
+post	/api/vaildate/eamil	이메일 중복체크
+post	/api/vaildate/nickname 닉네임 중복체크
+
+
+
+

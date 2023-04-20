@@ -19,7 +19,7 @@ select {
      justify-content: center;
 }
 
-.popular-contents {
+.popular-contants {
      width: 1000px;
      height: 100%;
 
@@ -30,11 +30,13 @@ select {
      background-color: blueviolet;
 }
 
-.image-size {
-     /* margin: 30px; */
+.contants-size {
      display: flex;
+     flex-direction: column;
      width: 240px;
      height: 240px;
+
+     /* z-index:  */
 }
 
 
@@ -49,7 +51,7 @@ select {
      background-color: antiquewhite;
 }
 
-.search-bar-contents {
+.search-bar-contants {
      width: 500px;
 
      display: flex;
@@ -59,7 +61,7 @@ select {
      margin: 10px;
 }
 
-.recent-contents {
+.recent-contants {
      width: 1000px;
      height: 100%;
      background-color: cadetblue;
@@ -74,7 +76,7 @@ select {
      justify-content: center;
 }
 
-.recent-contents-div {
+.recent-contants-div {
      width: 1000px;
      height: 100%;
 
