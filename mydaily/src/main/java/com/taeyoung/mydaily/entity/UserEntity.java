@@ -26,6 +26,7 @@ public class UserEntity {
     private String email;
     private String password;
     private String nickname;
+    private String profile;
     private String height;
     private String weight;
     private String gender;

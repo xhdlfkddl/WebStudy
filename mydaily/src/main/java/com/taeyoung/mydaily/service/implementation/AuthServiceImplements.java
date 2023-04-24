@@ -16,8 +16,8 @@ import com.taeyoung.mydaily.service.AuthService;
 @Service
 public class AuthServiceImplements implements AuthService {
 
-    @Autowired UserRepository userRepository;
-
+    @Autowired 
+    private UserRepository userRepository;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override

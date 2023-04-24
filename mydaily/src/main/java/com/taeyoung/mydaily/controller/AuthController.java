@@ -6,8 +6,11 @@ import com.taeyoung.mydaily.dto.response.ResponseDto;
 import com.taeyoung.mydaily.dto.response.auth.SignUpResponseDto;
 import com.taeyoung.mydaily.service.AuthService;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,10 +20,11 @@ public class AuthController {
     
     private final String SIGN_UP = "/sign-up";
 
-    @Autowired private AuthService authService;
+    @Autowired 
+    private AuthService authService;
 
     @PostMapping(SIGN_UP)
-    public ResponseDto<SignUpResponseDto> signUp(SignUpDto requestBody) {
+    public ResponseDto<SignUpResponseDto> signUp(@Valid @RequestBody SignUpDto requestBody) {
         ResponseDto<SignUpResponseDto> response = authService.signUp(requestBody);
         return response;
     }
