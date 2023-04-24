@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.taeyoung.mydaily.entity.primaryKey.LikyPk;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,9 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Liky")
 public class LikyEntity {
     @Id
-    private int boardNumber;
-    @Id
-    private String userEmail;
+    private LikyPk likyPk;
     private String userNickname;
     private String userProfileUrl;
 }
