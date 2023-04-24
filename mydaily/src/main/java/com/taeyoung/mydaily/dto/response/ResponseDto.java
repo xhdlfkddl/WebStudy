@@ -1,4 +1,4 @@
-package com.taeyoung.mydaily.dto;
+package com.taeyoung.mydaily.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +15,7 @@ public class ResponseDto<D> {
         return ResponseDto.set(true, "Success", data);
     }
 
-    public static <D> ResponseDto<D> setFail(String message, D data) {
-        return ResponseDto.set(false, message, data);
+    public static <D> ResponseDto<D> setFail(String message) {
+        return ResponseDto.set(false, message, null);
     }
 }

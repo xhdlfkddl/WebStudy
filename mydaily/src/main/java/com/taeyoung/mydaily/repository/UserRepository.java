@@ -10,5 +10,7 @@ import com.taeyoung.mydaily.entity.UserEntity;
 @Repository
 // <Entity, Id의 type>
 public interface UserRepository extends JpaRepository<UserEntity, String> {
-    
+    public boolean existsByEmail(String email);
+    public boolean existsByNickname(String email);
+
 }
