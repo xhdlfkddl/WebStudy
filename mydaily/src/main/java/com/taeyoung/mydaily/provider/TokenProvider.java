@@ -32,13 +32,15 @@ public class TokenProvider {
         Date expiredTime = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
 
         // JWT를 생성해주는 함수
-        return Jwts.builder()
-                    // 암호화에 사용될 알고리즘, 키
-                    .signWith(SignatureAlgorithm.HS512, SECURITY_KEY)
-                    // JWT의 제목, 생성일, 만료일
-                    .setSubject(userEmail).setIssuedAt(new Date()).setExpiration(expiredTime)
-                    // 생성
-                    .compact();
+        String jwt = Jwts.builder()
+                        // 암호화에 사용될 알고리즘, 키
+                        .signWith(SignatureAlgorithm.HS512, SECURITY_KEY)
+                        // JWT의 제목, 생성일, 만료일
+                        .setSubject(userEmail).setIssuedAt(new Date()).setExpiration(expiredTime)
+                        // 생성
+                        .compact();
+
+        return jwt;
     }
 
     // JWT 검증 = 복호화

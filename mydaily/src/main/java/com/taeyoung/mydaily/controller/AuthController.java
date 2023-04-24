@@ -1,8 +1,10 @@
 package com.taeyoung.mydaily.controller;
 
 import com.taeyoung.mydaily.common.constant.ApiPattern;
+import com.taeyoung.mydaily.dto.request.auth.SignInDto;
 import com.taeyoung.mydaily.dto.request.auth.SignUpDto;
 import com.taeyoung.mydaily.dto.response.ResponseDto;
+import com.taeyoung.mydaily.dto.response.auth.SignInResponseDto;
 import com.taeyoung.mydaily.dto.response.auth.SignUpResponseDto;
 import com.taeyoung.mydaily.service.AuthService;
 
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     
     private final String SIGN_UP = "/sign-up";
+    private final String SIGN_IN = "/sign-in";
 
     @Autowired 
     private AuthService authService;
@@ -29,4 +32,9 @@ public class AuthController {
         return response;
     }
 
+    @PostMapping(SIGN_IN)
+    public ResponseDto<SignInResponseDto> signIn(@RequestBody SignInDto requestBody) {
+        ResponseDto<SignInResponseDto> response = authService.signIn(requestBody);
+        return response;
+    }
 }
