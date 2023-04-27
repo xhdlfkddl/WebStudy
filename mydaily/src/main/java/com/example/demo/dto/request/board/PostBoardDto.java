@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostBoardDto {
     private String boardContent;
-    private String boardImageUrl1;
-    private String boardImageUrl2;
-    private String boardImageUrl3;
+    private String boardImgUrl1;
+    private String boardImgUrl2;
+    private String boardImgUrl3;
     private String tag;
 }

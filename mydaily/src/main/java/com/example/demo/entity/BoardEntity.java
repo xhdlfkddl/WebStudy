@@ -46,13 +46,13 @@ public class BoardEntity {
     public BoardEntity(UserEntity entity, PostBoardDto dto) {
 
         Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = simpleDateFormat.format(date);
 
         this.boardContent = dto.getBoardContent();
-        this.boardImgUrl1 = dto.getBoardImageUrl1();
-        this.boardImgUrl3 = dto.getBoardImageUrl2();
-        this.boardImgUrl3 = dto.getBoardImageUrl3();
+        this.boardImgUrl1 = dto.getBoardImgUrl1();
+        this.boardImgUrl2 = dto.getBoardImgUrl2();
+        this.boardImgUrl3 = dto.getBoardImgUrl3();
         this.tag = dto.getTag();
         this.boardWriteTime = now;
         this.writerEmail = entity.getEmail();
