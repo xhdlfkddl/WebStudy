@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.example.demo.dto.request.product.PostProductDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +22,14 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productNumber;
     private String productName;
-    private String productPrice;
+    private int productPrice;
     private String productUrl;
     private String productImgUrl;
+
+    public ProductEntity(PostProductDto dto) {
+        this.productName = dto.getProductName();
+        this.productPrice = dto.getProductPrice();
+        this.productUrl = dto.getProductUrl();
+        this.productImgUrl = dto.getProductImgUrl();
+    }
 }
