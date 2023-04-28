@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.common.constant.ResponseMessage;
+import com.example.demo.dto.request.board.PatchBoardDto;
 import com.example.demo.dto.request.board.PostBoardDto;
 import com.example.demo.dto.response.ResponseDto;
+import com.example.demo.dto.response.board.PatchBoardResponseDto;
 import com.example.demo.dto.response.board.PostBoardResponseDto;
 import com.example.demo.entity.BoardEntity;
 import com.example.demo.entity.CommentEntity;
@@ -31,6 +33,7 @@ public class BoardServiceImplements implements BoardService{
     @Autowired LikyRepository likyRepository;
     @Autowired BoardHasProductRepository boardHasProductRepository;
 
+    //? 게시물 작성
     @Override
     public ResponseDto<PostBoardResponseDto> postBoard(String email, PostBoardDto postBoardDto) {
         PostBoardResponseDto data = null;
@@ -67,5 +70,37 @@ public class BoardServiceImplements implements BoardService{
 
         return ResponseDto.setSuccess(data);
     }
-    
+    //? 게시물 수정
+    @Override
+    public ResponseDto<PatchBoardResponseDto> patchBoard(String email, PatchBoardDto patchBoardDto) {
+        PatchBoardResponseDto data = null;
+
+        int boardNumber = patchBoardDto.getBoardNumber();
+        
+        try {
+            System.out.println("email: " + email);
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return ResponseDto.setFail(ResponseMessage.NOT_EXIST_BOARD);
+            
+            // String isMatch = boardEntity.getWriterEmail();
+            boolean isMatch = email.equals(boardEntity.getWriterEmail());
+            System.out.println(isMatch);
+            if (!isMatch) return ResponseDto.setFail(ResponseMessage.NOT_PERMISSION);
+
+            List<CommentEntity> commentEntity = commentRepository.findByBoardNumberOrderByWriterDateDesc(boardNumber);
+            List<LikyEntity> likyEntity = likyRepository.findByBoardNumber(boardNumber);
+
+            boardEntity.patch(patchBoardDto);
+            boardRepository.save(boardEntity);
+
+            data = new PatchBoardResponseDto(boardEntity, commentEntity, likyEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+
+        return ResponseDto.setSuccess(data);
+    }
+
 }
