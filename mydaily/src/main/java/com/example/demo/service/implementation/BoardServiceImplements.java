@@ -1,5 +1,6 @@
 package com.example.demo.service.implementation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import com.example.demo.common.constant.ResponseMessage;
 import com.example.demo.dto.request.board.PatchBoardDto;
 import com.example.demo.dto.request.board.PostBoardDto;
 import com.example.demo.dto.response.ResponseDto;
+import com.example.demo.dto.response.board.MyLikeListResponseDto;
 import com.example.demo.dto.response.board.PatchBoardResponseDto;
 import com.example.demo.dto.response.board.PostBoardResponseDto;
 import com.example.demo.entity.BoardEntity;
@@ -70,6 +72,7 @@ public class BoardServiceImplements implements BoardService{
 
         return ResponseDto.setSuccess(data);
     }
+    
     //? 게시물 수정
     @Override
     public ResponseDto<PatchBoardResponseDto> patchBoard(String email, PatchBoardDto patchBoardDto) {
@@ -78,13 +81,10 @@ public class BoardServiceImplements implements BoardService{
         int boardNumber = patchBoardDto.getBoardNumber();
         
         try {
-            System.out.println("email: " + email);
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null) return ResponseDto.setFail(ResponseMessage.NOT_EXIST_BOARD);
             
-            // String isMatch = boardEntity.getWriterEmail();
             boolean isMatch = email.equals(boardEntity.getWriterEmail());
-            System.out.println(isMatch);
             if (!isMatch) return ResponseDto.setFail(ResponseMessage.NOT_PERMISSION);
 
             List<CommentEntity> commentEntity = commentRepository.findByBoardNumberOrderByWriterDateDesc(boardNumber);
@@ -94,6 +94,44 @@ public class BoardServiceImplements implements BoardService{
             boardRepository.save(boardEntity);
 
             data = new PatchBoardResponseDto(boardEntity, commentEntity, likyEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+
+        return ResponseDto.setSuccess(data);
+    }
+    
+    //? 좋아요 한 게시물 가져오기
+    @Override
+    public ResponseDto<List<MyLikeListResponseDto>> myLikeList(String email) {
+        List<MyLikeListResponseDto> data = new ArrayList<>();
+        MyLikeListResponseDto myLikeListResponseDto = null;
+        
+        List<LikyEntity> likyEntityList = new ArrayList<>();
+        BoardEntity boardEntity = null;
+        
+        int boardNumber = 0;
+        
+        try {
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return ResponseDto.setFail(ResponseMessage.NOT_EXIST_USER);
+
+            likyEntityList = likyRepository.findByUserEmail(email);
+            int forSize = likyEntityList.size()-1;
+
+            for (int i = 0; i <= forSize; i++) {
+                boardNumber = likyEntityList.get(i).getBoardNumber();
+                boardEntity = boardRepository.findByBoardNumber(boardNumber);
+
+                int boardEntityNumber = boardEntity.getBoardNumber();
+                String boardEntityImgUrl1 = boardEntity.getBoardImgUrl1();
+                myLikeListResponseDto = new MyLikeListResponseDto(boardEntityNumber, boardEntityImgUrl1);
+
+                data.add(i, myLikeListResponseDto);
+            }
+
 
         } catch (Exception exception) {
             exception.printStackTrace();

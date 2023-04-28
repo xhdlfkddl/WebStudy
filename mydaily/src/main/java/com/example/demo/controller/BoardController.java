@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,6 +14,7 @@ import com.example.demo.common.constant.ApiPattern;
 import com.example.demo.dto.request.board.PatchBoardDto;
 import com.example.demo.dto.request.board.PostBoardDto;
 import com.example.demo.dto.response.ResponseDto;
+import com.example.demo.dto.response.board.MyLikeListResponseDto;
 import com.example.demo.dto.response.board.PatchBoardResponseDto;
 import com.example.demo.dto.response.board.PostBoardResponseDto;
 import com.example.demo.service.BoardService;
@@ -22,6 +25,7 @@ public class BoardController {
 
     private final String POST_BOARD = "";
     private final String PATCH_BOARD = "";
+    private final String LIKE_LIST = "/like-list";
 
     @Autowired
     private BoardService boardService;
@@ -38,4 +42,9 @@ public class BoardController {
         return response;
     }
     
+    @PostMapping(LIKE_LIST)
+    public ResponseDto<List<MyLikeListResponseDto>> myLikeList(@AuthenticationPrincipal String email) {
+        ResponseDto<List<MyLikeListResponseDto>> response = boardService.myLikeList(email);
+        return response;
+    }
 }
