@@ -39,4 +39,8 @@ public class UserEntity {
         this.weight = signUpDto.getWeight();
         this.gender = signUpDto.getGender();
     }
+
+    public void patchProfile(String profileUrl) {
+        this.profile = profileUrl;
+    }
 }

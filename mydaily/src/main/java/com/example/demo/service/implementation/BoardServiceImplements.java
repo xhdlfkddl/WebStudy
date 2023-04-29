@@ -119,9 +119,9 @@ public class BoardServiceImplements implements BoardService{
             if (userEntity == null) return ResponseDto.setFail(ResponseMessage.NOT_EXIST_USER);
 
             likyEntityList = likyRepository.findByUserEmail(email);
-            int forSize = likyEntityList.size()-1;
+            int forSize = likyEntityList.size();
 
-            for (int i = 0; i <= forSize; i++) {
+            for (int i = 0; i < forSize; i++) {
                 boardNumber = likyEntityList.get(i).getBoardNumber();
                 boardEntity = boardRepository.findByBoardNumber(boardNumber);
 

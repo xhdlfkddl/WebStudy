@@ -72,4 +72,8 @@ public class BoardEntity {
         this.tag = dto.getTag();
     }
 
+    public void patchProfile(String email) {
+        this.writerProfileUrl = email;
+    }
+
 }

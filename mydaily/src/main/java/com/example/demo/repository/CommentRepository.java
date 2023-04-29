@@ -10,4 +10,5 @@ import com.example.demo.entity.CommentEntity;
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Integer> {
     public List<CommentEntity> findByBoardNumberOrderByWriterDateDesc(int boardNumber);
+    public List<CommentEntity> findByWriterEmail(String email);
 }
