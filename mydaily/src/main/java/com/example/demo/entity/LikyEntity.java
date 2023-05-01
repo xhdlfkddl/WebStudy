@@ -24,4 +24,8 @@ public class LikyEntity {
     private String userEmail;
     private String userNickname;
     private String userProfileUrl;
+
+    public void patchProfile(String profileUrl) {
+        this.userProfileUrl = profileUrl;
+    }
 }

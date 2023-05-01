@@ -11,9 +11,11 @@ import com.example.demo.dto.response.ResponseDto;
 import com.example.demo.dto.response.user.PatchProfileResponseDto;
 import com.example.demo.entity.BoardEntity;
 import com.example.demo.entity.CommentEntity;
+import com.example.demo.entity.LikyEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.repository.BoardRepository;
 import com.example.demo.repository.CommentRepository;
+import com.example.demo.repository.LikyRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 
@@ -26,6 +28,8 @@ public class UserSeviceImplements implements UserService {
     private BoardRepository boardRepository;
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private LikyRepository likyRepository;
 
     @Override
     public ResponseDto<PatchProfileResponseDto> patchProfile(String email, PatchProfileDto patchProfileDto) {
@@ -55,6 +59,15 @@ public class UserSeviceImplements implements UserService {
                 commentEntity = commentEntityList.get(i);
                 commentEntity.patchProfile(userProfile);
                 commentRepository.save(commentEntity);
+            }
+
+            List<LikyEntity> likyEntityList = likyRepository.findByUserEmail(email);
+            int likyEntitySize = likyEntityList.size();
+            LikyEntity likyEntity = null;
+            for (int i = 0; i < likyEntitySize; i++) {
+                likyEntity = likyEntityList.get(i);
+                likyEntity.patchProfile(userProfile);
+                likyRepository.save(likyEntity);
             }
 
             data = new PatchProfileResponseDto(true);
