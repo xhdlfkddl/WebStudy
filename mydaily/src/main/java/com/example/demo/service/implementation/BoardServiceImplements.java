@@ -10,6 +10,7 @@ import com.example.demo.common.constant.ResponseMessage;
 import com.example.demo.dto.request.board.PatchBoardDto;
 import com.example.demo.dto.request.board.PostBoardDto;
 import com.example.demo.dto.response.ResponseDto;
+import com.example.demo.dto.response.board.GetSearchTagResponseDto;
 import com.example.demo.dto.response.board.MyLikeListResponseDto;
 import com.example.demo.dto.response.board.PatchBoardResponseDto;
 import com.example.demo.dto.response.board.PostBoardResponseDto;
@@ -132,6 +133,31 @@ public class BoardServiceImplements implements BoardService{
                 data.add(i, myLikeListResponseDto);
             }
 
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+
+        return ResponseDto.setSuccess(data);
+    }
+
+    @Override
+    public ResponseDto<List<GetSearchTagResponseDto>> searchTag(String tag) {
+        List<GetSearchTagResponseDto> data = new ArrayList<>();
+        GetSearchTagResponseDto getSearchTagResponseDto = null;
+        int boardNumber = 0;
+        String boardImgUrl1 = null;
+
+        try {
+            List<BoardEntity> boardEntityList = boardRepository.findByTag(tag);
+            int boardEntityListSize = boardEntityList.size();
+            for(int i = 0; i < boardEntityListSize; i++) {
+                boardNumber = boardEntityList.get(i).getBoardNumber();
+                boardImgUrl1 = boardEntityList.get(i).getBoardImgUrl1();
+                getSearchTagResponseDto = new GetSearchTagResponseDto(boardNumber, boardImgUrl1);
+                data.add(i, getSearchTagResponseDto);
+            }
 
         } catch (Exception exception) {
             exception.printStackTrace();
