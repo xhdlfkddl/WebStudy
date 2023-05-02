@@ -11,4 +11,5 @@ import com.example.demo.entity.primaryKey.BoardHasProductPk;
 @Repository
 public interface BoardHasProductRepository extends JpaRepository<BoardHasProductEntity, BoardHasProductPk> {
     public List<BoardHasProductEntity> findByBoardNumber(int boardNumber);
+    public BoardHasProductEntity findByProductNumber(int productNumber);
 }
