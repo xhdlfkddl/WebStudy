@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.common.constant.ResponseMessage;
 import com.example.demo.dto.request.product.PostProductDto;
 import com.example.demo.dto.response.ResponseDto;
-import com.example.demo.dto.response.board.DeleteProductResponseDto;
+import com.example.demo.dto.response.product.DeleteProductResponseDto;
 import com.example.demo.dto.response.product.PostProductResponseDto;
 import com.example.demo.entity.BoardEntity;
 import com.example.demo.entity.BoardHasProductEntity;

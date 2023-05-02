@@ -10,11 +10,13 @@ import com.example.demo.common.constant.ResponseMessage;
 import com.example.demo.dto.request.board.PatchBoardDto;
 import com.example.demo.dto.request.board.PostBoardDto;
 import com.example.demo.dto.response.ResponseDto;
+import com.example.demo.dto.response.board.DeleteBoardResponseDto;
 import com.example.demo.dto.response.board.GetSearchTagResponseDto;
 import com.example.demo.dto.response.board.MyLikeListResponseDto;
 import com.example.demo.dto.response.board.PatchBoardResponseDto;
 import com.example.demo.dto.response.board.PostBoardResponseDto;
 import com.example.demo.entity.BoardEntity;
+import com.example.demo.entity.BoardHasProductEntity;
 import com.example.demo.entity.CommentEntity;
 import com.example.demo.entity.LikyEntity;
 import com.example.demo.entity.UserEntity;
@@ -54,15 +56,6 @@ public class BoardServiceImplements implements BoardService{
 
             List<CommentEntity> commentEntity = commentRepository.findByBoardNumberOrderByWriterDateDesc(boardNumber);
             List<LikyEntity> likyEntity = likyRepository.findByBoardNumber(boardNumber);
-
-            // List<ProductEntity> productEntityList = null;
-            
-            // List<BoardHasProductEntity> boardHasProductEntity = boardHasProductRepository.findByBoardNumber(boardNumber);
-            // for (BoardHasProductEntity number : boardHasProductEntity) {
-            //     int productNumber = number.getBoardHasProductPk().getProductNumber();
-            //     ProductEntity productEntity = productRepository.findById(productNumber) ;
-            //     productEntityList.add(productEntity);
-            // }
 
             data = new PostBoardResponseDto(boardEntity, commentEntity, likyEntity);
 
@@ -142,6 +135,7 @@ public class BoardServiceImplements implements BoardService{
         return ResponseDto.setSuccess(data);
     }
 
+    //? 태그 검색
     @Override
     public ResponseDto<List<GetSearchTagResponseDto>> searchTag(String tag) {
         List<GetSearchTagResponseDto> data = new ArrayList<>();
@@ -167,4 +161,40 @@ public class BoardServiceImplements implements BoardService{
         return ResponseDto.setSuccess(data);
     }
 
+    //? 게시물 삭제
+    @Override
+    public ResponseDto<DeleteBoardResponseDto> deleteBoard(String email, int boardNumber) {
+        DeleteBoardResponseDto data = null; 
+
+        try {
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return ResponseDto.setFail(ResponseMessage.NOT_EXIST_BOARD);
+
+            boolean isEqualWriter = email.equals(boardEntity.getWriterEmail());
+            if (!isEqualWriter) return ResponseDto.setFail(ResponseMessage.NOT_PERMISSION);
+
+            
+            List<BoardHasProductEntity> boardHasProductEntityList = boardHasProductRepository.findByBoardNumber(boardNumber);
+            int entitySize = boardHasProductEntityList.size();
+            for (int i = 0; i < entitySize; i++) {
+                BoardHasProductEntity boardHasProductEntity = boardHasProductEntityList.get(i);
+                // ProductEntity productEntity = productRepository.findById(boardHasProductEntity.getProductNumber());
+                // productRepository.deleteByProductNumber(boardHasProductEntity.getProductNumber());
+                boardHasProductRepository.deleteByBoardNumber(boardHasProductEntity.getBoardNumber());
+                productRepository.deleteByProductNumber(boardHasProductEntity.getProductNumber());
+            }
+
+            commentRepository.deleteByBoardNumber(boardNumber);
+            likyRepository.deleteByBoardNumber(boardNumber);
+
+            boardRepository.delete(boardEntity);
+            data = new DeleteBoardResponseDto(true);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(data);
+    }
+    
 }
