@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Authentication from './views';
 
 //# Router 설계 
 //? 1. 'main' path 작성 : '/'
@@ -14,8 +15,7 @@ import './App.css';
 
 function App() {
   return (
-    <>
-    </>    
+    <Authentication />    
   );
 }
 

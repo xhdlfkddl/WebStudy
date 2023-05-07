@@ -1,3 +1,5 @@
-import SignUpResponseDto from "./Sign-up.response.dto";
-
-export type { SignUpResponseDto };
+export default interface ResponseDto<Data> {
+    result: boolean;
+    message: string;
+    data: Data | null;
+}
