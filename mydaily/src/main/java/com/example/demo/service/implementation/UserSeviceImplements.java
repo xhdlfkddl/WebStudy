@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.common.constant.ResponseMessage;
 import com.example.demo.dto.request.user.PatchProfileDto;
+import com.example.demo.dto.request.user.ValidateEmailDto;
+import com.example.demo.dto.request.user.ValidateNicknameDto;
 import com.example.demo.dto.response.ResponseDto;
 import com.example.demo.dto.response.user.PatchProfileResponseDto;
+import com.example.demo.dto.response.user.ValidateEmailResponseDto;
+import com.example.demo.dto.response.user.ValidateNicknameResponseDto;
 import com.example.demo.entity.BoardEntity;
 import com.example.demo.entity.CommentEntity;
 import com.example.demo.entity.LikyEntity;
@@ -72,6 +76,44 @@ public class UserSeviceImplements implements UserService {
 
             data = new PatchProfileResponseDto(true);
 
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+
+        return ResponseDto.setSuccess(data);
+    }
+
+    @Override
+    public ResponseDto<ValidateEmailResponseDto> validateEmail(ValidateEmailDto validateEmailDto) {
+        ValidateEmailResponseDto data = null;
+
+        String email = validateEmailDto.getEmail();
+
+        try {
+            boolean isExists = userRepository.existsByEmail(email);
+            if (isExists) return ResponseDto.setFail(ResponseMessage.EXIST_EMAIL);
+
+            data = new ValidateEmailResponseDto(true);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+
+        return ResponseDto.setSuccess(data);
+    }
+
+    @Override
+    public ResponseDto<ValidateNicknameResponseDto> validateNickname(ValidateNicknameDto validateNicknameDto) {
+        ValidateNicknameResponseDto data = null;
+
+        String nickname = validateNicknameDto.getNickname();
+
+        try {
+            boolean isExists = userRepository.existsByNickname(nickname);
+            if (isExists) return ResponseDto.setFail(ResponseMessage.EXIST_NICKNAME);
+            
+            data = new ValidateNicknameResponseDto(true);
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
