@@ -55,27 +55,29 @@ export default function SignUpCardView() {
                 <Typography sx={{fontSize: '25px', mb:'15px'}}>회원가입</Typography>
                 <FormControl fullWidth variant="standard">
                     <InputLabel>이메일*</InputLabel>
-                    <Input type='text' sx={{mb: '5px'}} endAdornment={
+                    <Input type='text' sx={{mb: '15px'}} endAdornment={
                         <InputAdornment position='end'>
                             <Button size='small' sx={{backgroundColor: 'grey', color: 'white', pl: '10px', pr: '10px', mb: '5px', borderRadius:'10px'}}>중복확인</Button>
                         </InputAdornment>
                     }
+                    onChange={(email) => setEmail(email.target.value)}
                     />
                 </FormControl>
                 <FormControl fullWidth variant="standard">
                     <InputLabel>비밀번호*</InputLabel>
-                    <Input type={showPassword ? 'text' : 'password'} sx={{mb: '5px'}} endAdornment={
+                    <Input type={showPassword ? 'text' : 'password'} sx={{mb: '15px'}} endAdornment={
                         <InputAdornment position='end'>
                             <IconButton onClick={() => setShowPassword(!showPassword)}>
                                 {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon/>}
                             </IconButton>
                         </InputAdornment>
                     }
+                    onChange={(password) => setPassword(password.target.value)}
                     />
                 </FormControl>
                 <FormControl fullWidth variant="standard">
                     <InputLabel>비밀번호 확인*</InputLabel>
-                    <Input type={showPassword ? 'text' : 'password'} sx={{mb: '5px'}} endAdornment={
+                    <Input type={showPassword ? 'text' : 'password'} sx={{mb: '15px'}} endAdornment={
                         <InputAdornment position='end'>
                             <IconButton onClick={() => setShowPassword(!showPassword)}>
                                 {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon/>}
@@ -86,11 +88,12 @@ export default function SignUpCardView() {
                 </FormControl>
                 <FormControl fullWidth variant="standard">
                     <InputLabel>닉네임*</InputLabel>
-                    <Input type='text' sx={{mb: '5px'}} endAdornment={
+                    <Input type='text' sx={{mb: '15px'}} endAdornment={
                         <InputAdornment position='end'>
                             <Button size='small' sx={{backgroundColor: 'grey', color: 'white', pl: '10px', pr: '10px', mb: '5px', borderRadius:'10px'}}>중복확인</Button>
                         </InputAdornment>
                     }
+                    onChange={(nickname) => setNickname(nickname.target.value)}
                     />
                 </FormControl>
                 <FormControl fullWidth variant="standard">
@@ -99,8 +102,10 @@ export default function SignUpCardView() {
                         id="disable-close-on-select"
                         disableCloseOnSelect
                         renderInput={(params) => (
-                        <TextField {...params} label="키" variant="standard" />
+                        <TextField {...params} label="키" variant="standard" id="myHeightValue" />
                         )}
+                        onChange={(event, value) => (setHeight(value as string))}
+                        sx={{mb: '15px'}}
                     />
                 </FormControl>
                 <FormControl fullWidth variant="standard">
@@ -111,6 +116,8 @@ export default function SignUpCardView() {
                             renderInput={(params) => (
                             <TextField {...params} label="체중" variant="standard" />
                             )}
+                            onChange={(event, value) => (setWeight(value as string))}
+                            sx={{mb: '15px'}}
                         />
                 </FormControl>
                 <FormControl fullWidth variant="standard">
@@ -121,6 +128,8 @@ export default function SignUpCardView() {
                             renderInput={(params) => (
                             <TextField {...params} label="성별" variant="standard" />
                             )}
+                            onChange={(event, value) => (setGender(value as string))}
+                            sx={{mb: '15px'}}
                         />
                 </FormControl>
                 <Button fullWidth sx={{mt: '70px',backgroundColor: 'black', color: 'white'}} onClick={onSignUpHandler}>회원가입</Button>
