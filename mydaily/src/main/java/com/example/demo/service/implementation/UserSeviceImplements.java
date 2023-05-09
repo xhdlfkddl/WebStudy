@@ -92,9 +92,12 @@ public class UserSeviceImplements implements UserService {
 
         try {
             boolean isExists = userRepository.existsByEmail(email);
-            if (isExists) return ResponseDto.setFail(ResponseMessage.EXIST_EMAIL);
+            if (isExists) {
+                data = new ValidateEmailResponseDto(true);
+            } else {
+                data = new ValidateEmailResponseDto(false);
+            }
 
-            data = new ValidateEmailResponseDto(true);
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
@@ -111,9 +114,12 @@ public class UserSeviceImplements implements UserService {
 
         try {
             boolean isExists = userRepository.existsByNickname(nickname);
-            if (isExists) return ResponseDto.setFail(ResponseMessage.EXIST_NICKNAME);
+            if (isExists) {
+                data = new ValidateNicknameResponseDto(true);
+            } else {
+                data = new ValidateNicknameResponseDto(false);
+            }
             
-            data = new ValidateNicknameResponseDto(true);
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);

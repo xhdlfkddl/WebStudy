@@ -1,5 +1,5 @@
 interface validateNicknameDto {
-    status: boolean;
+    nickname: string;
 }
 
 export default validateNicknameDto;
