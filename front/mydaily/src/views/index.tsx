@@ -1,7 +1,18 @@
+import { Box } from "@mui/material";
+import SignInCardView from "./AuthenticationView/SignInCardView";
 import SignUpCardView from "./AuthenticationView/SignUpCardView";
+import { useState } from "react";
+
 
 export default function Authentication() {
+    
+    const [ signInView, setSignInView ] = useState<boolean>(true);
+
     return(
-        <SignUpCardView />
+        <Box>
+            {
+                signInView ? (<SignInCardView setSignInView={setSignInView} />) : (<SignUpCardView setSignInView={setSignInView} />)
+            }
+        </Box>
     )
 }

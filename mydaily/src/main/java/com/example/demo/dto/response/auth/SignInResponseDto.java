@@ -17,7 +17,7 @@ public class SignInResponseDto {
     private String weight;
     private String gender;
     private String token;
-    private String expiredTime;
+    private int expiredTime;
 
     public SignInResponseDto(UserEntity userEntity, String token) {
         this.email = userEntity.getEmail();
@@ -27,6 +27,6 @@ public class SignInResponseDto {
         this.weight = userEntity.getWeight();
         this.gender = userEntity.getGender();
         this.token = token;
-        this.expiredTime = "+ 1시간";
+        this.expiredTime = 3600000; // 1시간
     }
 }

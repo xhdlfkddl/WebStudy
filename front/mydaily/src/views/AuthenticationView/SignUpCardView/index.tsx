@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 
 
 import { Box, FormControl, TextField, Button, Input, InputLabel, InputAdornment, IconButton, Typography, Autocomplete, FormHelperText } from '@mui/material';
@@ -16,7 +16,11 @@ import validateEmailDto from "src/apis/request/auth/Validate-email.request.dto";
 import validateNicknameDto from "src/apis/request/auth/Validate-nickname.request.dto";
 import validateNicknameResponseDto from "src/apis/response/auth/Validate-nickname.response.dto";
 
-export default function SignUpCardView() {
+interface Props {
+    setSignInView: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function SignUpCardView({ setSignInView }: Props) {
     //                                                   Hook                                                  //
     const { email, password, passwordCheck, nickname, height, weight, gender } = useSignUpStore();
     const { setEmail, setPassword, setPasswordCheck, setNickname, setHeight, setWeight, setGender } = useSignUpStore();
@@ -100,6 +104,7 @@ export default function SignUpCardView() {
             return;
         }
         const validateFlag = data.status;
+        // validateFlag = undefind
         console.log(validateFlag);
         if (validateFlag)  {
             setEmail('');
@@ -132,7 +137,8 @@ export default function SignUpCardView() {
 
     const signUpResponseHandler = (response: AxiosResponse<any, any>) => {
         const { result, message } = response.data as ResponseDto<SignUpResponseDto>; 
-        if (result) alert(message);
+        if (result) alert("회원가입이 완료되었습니다!!");
+        setSignInView(true);
         return;
     }
     
@@ -272,6 +278,10 @@ export default function SignUpCardView() {
                         />
                 </FormControl>
                 <Button fullWidth sx={{mt: '70px',backgroundColor: 'black', color: 'white'}} onClick={onSignUpHandler}>회원가입</Button>
+                <Box sx={{mt: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                  <Typography>이미 회원이신가요?</Typography>
+               </Box>
+                <Button fullWidth variant="outlined" sx={{mt: '10px', backgroundColor: 'white', color: 'black', borderColor: 'black'}} onClick={() => setSignInView(true)}>로그인</Button>
             </Box>
         </Box>
     )

@@ -84,7 +84,7 @@ public class AuthServiceImplements implements AuthService {
             exception.printStackTrace();
             return ResponseDto.setFail(ResponseMessage.FAIL_SIGN_IN);
         }
-
+        
         return ResponseDto.setSuccess(data);
     }
     
