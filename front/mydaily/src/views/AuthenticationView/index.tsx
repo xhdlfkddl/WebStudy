@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import SignInCardView from "./AuthenticationView/SignInCardView";
-import SignUpCardView from "./AuthenticationView/SignUpCardView";
+import SignInCardView from "./SignInCardView";
+import SignUpCardView from "./SignUpCardView";
 import { useState } from "react";
 
 

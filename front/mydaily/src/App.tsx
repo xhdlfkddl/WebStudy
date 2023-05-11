@@ -1,7 +1,8 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Authentication from './views';
+import Authentication from './views/AuthenticationView';
+import BoardDetailView from './views/Board/BoardDetailView';
 
 //# Router 설계 
 //? 1. 'main' path 작성 : '/'
@@ -15,7 +16,8 @@ import Authentication from './views';
 
 function App() {
   return (
-    <Authentication />    
+    // <Authentication />    
+    <BoardDetailView />
   );
 }
 
