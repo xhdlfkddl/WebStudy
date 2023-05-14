@@ -7,18 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.common.constant.ResponseMessage;
+import com.example.demo.dto.request.board.LikeDto;
 import com.example.demo.dto.request.board.PatchBoardDto;
 import com.example.demo.dto.request.board.PostBoardDto;
+import com.example.demo.dto.request.board.PostCommentDto;
 import com.example.demo.dto.response.ResponseDto;
 import com.example.demo.dto.response.board.DeleteBoardResponseDto;
+import com.example.demo.dto.response.board.GetBoardResponseDto;
 import com.example.demo.dto.response.board.GetSearchTagResponseDto;
+import com.example.demo.dto.response.board.LikeResponseDto;
 import com.example.demo.dto.response.board.MyLikeListResponseDto;
 import com.example.demo.dto.response.board.PatchBoardResponseDto;
 import com.example.demo.dto.response.board.PostBoardResponseDto;
+import com.example.demo.dto.response.board.PostCommentResponseDto;
 import com.example.demo.entity.BoardEntity;
 import com.example.demo.entity.BoardHasProductEntity;
 import com.example.demo.entity.CommentEntity;
 import com.example.demo.entity.LikyEntity;
+import com.example.demo.entity.ProductEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.repository.BoardHasProductRepository;
 import com.example.demo.repository.BoardRepository;
@@ -191,6 +197,110 @@ public class BoardServiceImplements implements BoardService{
             data = new DeleteBoardResponseDto(true);
 
         } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(data);
+    }
+
+    @Override
+    public ResponseDto<GetBoardResponseDto> getBoard(int boardNumber) {
+
+        GetBoardResponseDto data = null;
+
+        try {
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return ResponseDto.setFail(ResponseMessage.NOT_EXIST_BOARD);
+            UserEntity userEntity = userRepository.findByEmail(boardEntity.getWriterEmail());
+            List<LikyEntity> likyList = likyRepository.findByBoardNumber(boardNumber);
+            List<CommentEntity> commentList = commentRepository.findByBoardNumberOrderByWriterDateDesc(boardNumber);
+            List<BoardHasProductEntity> boardHasProductList = boardHasProductRepository.findByBoardNumber(boardNumber);
+            List<ProductEntity> productList = new ArrayList<>();
+
+            for (BoardHasProductEntity boardHasProductEntity : boardHasProductList) {
+                int productNumber = boardHasProductEntity.getProductNumber();
+                ProductEntity productEntity = productRepository.findById(productNumber);
+                productList.add(productEntity);
+            }
+            
+            boardEntity.getViewCount();
+            boardRepository.save(boardEntity);
+
+            data = new GetBoardResponseDto(boardEntity, userEntity, commentList, likyList, productList);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+
+        return ResponseDto.setSuccess(data);
+
+    }
+    @Override
+    public ResponseDto<PostCommentResponseDto> postComment(String email, PostCommentDto dto) {
+       
+        PostCommentResponseDto data = null;
+
+        int boardNumber = dto.getBoardNumber();
+
+        try {
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return ResponseDto.setFail(ResponseMessage.NOT_EXIST_USER);
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return ResponseDto.setFail(ResponseMessage.NOT_EXIST_BOARD);
+
+            CommentEntity commentEntity = new CommentEntity(userEntity, dto);
+            commentRepository.save(commentEntity);
+
+            boardEntity.increaseCommentCount();
+            boardRepository.save(boardEntity);
+
+            List<CommentEntity> commentList = commentRepository.findByBoardNumber(boardNumber);
+            List<LikyEntity> likeList = likyRepository.findByBoardNumber(boardNumber);
+
+            data = new PostCommentResponseDto(boardEntity, likeList, commentList);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(data);
+    }
+
+    @Override
+    public ResponseDto<LikeResponseDto> like(String email, LikeDto dto) {
+
+        LikeResponseDto data = null;
+
+        int boardNumber = dto.getBoardNumber();
+
+        try {
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return ResponseDto.setFail(ResponseMessage.NOT_EXIST_USER);
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return ResponseDto.setFail(ResponseMessage.NOT_EXIST_BOARD);
+
+            LikyEntity likyEntity = likyRepository.findByUserEmailAndBoardNumber(email, boardNumber);
+            if (likyEntity == null) {
+                likyEntity = new LikyEntity(userEntity, boardNumber);
+                likyRepository.save(likyEntity);
+                boardEntity.increaseLikeCount();
+            } else {
+                likyRepository.delete(likyEntity);
+                boardEntity.decreaseLikeCount();
+            }
+            boardRepository.save(boardEntity);
+
+            List<CommentEntity> commentList = commentRepository.findByBoardNumber(boardNumber);
+            List<LikyEntity> likeList = likyRepository.findByBoardNumber(boardNumber);
+
+            data = new LikeResponseDto(boardEntity, likeList, commentList);
+
+        } 
+        catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
         }

@@ -13,6 +13,7 @@ import com.example.demo.entity.primaryKey.LikyPk;
 public interface LikyRepository extends JpaRepository<LikyEntity, LikyPk> {
     public List<LikyEntity> findByBoardNumber(int boardNumber);
     public List<LikyEntity> findByUserEmail(String userEmail);
+    public LikyEntity findByUserEmailAndBoardNumber(String userEmail, int boardNumber);
     @Transactional
     public void deleteByBoardNumber(int boardNumber);
 }

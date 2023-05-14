@@ -28,4 +28,11 @@ public class LikyEntity {
     public void patchProfile(String profileUrl) {
         this.userProfileUrl = profileUrl;
     }
+
+    public LikyEntity(UserEntity userEntity, int boardNumber) {
+        this.userEmail = userEntity.getEmail();
+        this.boardNumber = boardNumber;
+        this.userNickname = userEntity.getNickname();
+        this.userProfileUrl = userEntity.getProfile();
+    }
 }

@@ -43,4 +43,5 @@ public class UserEntity {
     public void patchProfile(String profileUrl) {
         this.profile = profileUrl;
     }
+
 }

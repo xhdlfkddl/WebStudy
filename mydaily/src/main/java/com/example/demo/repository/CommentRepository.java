@@ -12,6 +12,7 @@ import com.example.demo.entity.CommentEntity;
 public interface CommentRepository extends JpaRepository<CommentEntity, Integer> {
     public List<CommentEntity> findByBoardNumberOrderByWriterDateDesc(int boardNumber);
     public List<CommentEntity> findByWriterEmail(String email);
+    public List<CommentEntity> findByBoardNumber(int boardNumber);
     @Transactional
     public void deleteByBoardNumber(int boardNumber);
 }
