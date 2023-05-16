@@ -10,7 +10,7 @@ export default function MainContent() {
 
     return(
         <Box>
-            <Button onClick={() => navigator(`/api/board/2`)}>
+            <Button onClick={() => navigator(`/board/2`)}>
                 boardDetailView
             </Button>
         </Box>

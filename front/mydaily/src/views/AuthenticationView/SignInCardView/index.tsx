@@ -11,12 +11,15 @@ import axios, { AxiosResponse } from "axios";
 import ResponseDto from "src/apis/response";
 import { SignInResponseDto } from "src/apis/response/auth";
 import { getExpireTime } from "src/utils";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     setSignInView: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function SignInCardView({ setSignInView }: Props) {
+
+    const navigator = useNavigate();
 
     const [cookies, setCookie] = useCookies();
     const { setUser } = useUserStore();
@@ -74,6 +77,8 @@ export default function SignInCardView({ setSignInView }: Props) {
         const userNickname = user.nickname;
         alert(userNickname + "님 환영합니다!!");
         console.log(data);
+
+        navigator('/');
     }
 
     const signInErrorHandler = (error: any) => {

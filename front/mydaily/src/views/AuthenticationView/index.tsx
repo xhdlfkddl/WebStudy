@@ -4,7 +4,7 @@ import SignUpCardView from "./SignUpCardView";
 import { useState } from "react";
 
 
-export default function Authentication() {
+export default function AuthenticationView() {
     
     const [ signInView, setSignInView ] = useState<boolean>(true);
 
