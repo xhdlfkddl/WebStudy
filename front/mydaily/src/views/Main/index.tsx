@@ -10,6 +10,9 @@ export default function MainContent() {
 
     return(
         <Box>
+            <Button onClick={() => navigator(`/auth`)}>
+                로그인
+            </Button>
             <Button onClick={() => navigator(`/board/2`)}>
                 boardDetailView
             </Button>

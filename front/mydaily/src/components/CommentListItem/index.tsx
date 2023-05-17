@@ -1,38 +1,56 @@
-import { Avatar, Box, Divider, FormControl, OutlinedInput, Typography, Button } from "@mui/material"
-import { useState, ChangeEvent } from "react";
+import { Avatar, Box, Typography } from "@mui/material"
+import { useState, ChangeEvent, useEffect } from "react";
+import { Comment } from "src/interfaces";
 
-export default function CommentListItem() {
-    
-    const [ comment, setComment ] = useState<string>('');
-    const [ commentBlankFlag, setCommentBlankFlag ] = useState<Boolean>(false);
+interface Props {
+    item: Comment;
+}
 
-    const commentBlankCheck = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setComment(event.target.value);
-        setCommentBlankFlag(true);
+export default function CommentListItem({item}: Props ) {
+
+    const [ time, setTime ] = useState<string>('');
+    const dateGap = Date.now() - Date.parse(item.writerDate);
+    const minute = Math.floor(dateGap / (1000 * 60));
+    const hour = Math.floor(minute / 60);
+    const day = Math.floor(hour/24);
+    const month = Math.floor(day/30);
+    const year = Math.floor(month/12);
+
+    const commentTime = () => {
+        if( 0 <= minute && minute < 61) {
+            setTime(minute + "분전");
+            return;
+        } 
+        if (0 < hour && hour < 24) {
+            setTime(hour + "시간전")
+            return;
+        } if ( 0 < day && day < 366) {
+            setTime(day + "일전");
+            return;
+        } if (1 <= year) {
+            setTime(year + "년전");
+            return;
+        }
+
     }
 
+    useEffect (() => {
+        commentTime();
+    },[])
+    
     return (
-        <Box sx={{display: 'flex', ml:'10px'}}>
-            <Box sx={{display:'flex', justifyContent:'center', flexDirection:'column'}}>
-                <Box sx={{display:'flex'}}>
-                    <Avatar sx={{width:'30px', height:'30px', mt:'4px'}} src="/broken-image.jpg" />
-                    <FormControl size="small" fullWidth sx={{ml:'10px'}}>
-                        <OutlinedInput onChange={(event) => commentBlankCheck(event)} value={comment} placeholder="댓글 달기" />
-                    </FormControl>
-                    {
-                        commentBlankFlag ? (<Button size="small">게시</Button>) : 
-                                           (<></>)
-                    }
-                    
-                </Box>
-                <Box sx={{display:'flex', mt:'10px'}}>
-                    <Avatar sx={{width:'30px', height:'30px'}} src="/broken-image.jpg" />
-                    <Box sx={{display:'flex', mt:'4px'}}>
-                        <Typography sx={{ml:'10px', fontWeight:'600', fontSize:'15px'}}>hello_123</Typography>
-                        <Typography sx={{ml:'10px', fontSize:'13px'}}>라인 디테일의 미니 원피스에 카고 팬츠를 매치해 개성을 더한 캐주얼 룩</Typography>
+        <Box sx={{display: 'flex', ml:'10px', flexDirection:'column'}}>
+            <Box>
+                <Box sx={{display:'flex', justifyContent:'center', flexDirection:'column'}}>
+                    <Box sx={{display:'flex', mt:'10px'}}>
+                        <Avatar sx={{width:'30px', height:'30px'}} src={item.writerProfileUrl ? item.writerProfileUrl : ''} />
+                        <Box sx={{display:'flex', mt:'4px'}}>
+                            <Typography sx={{ml:'10px', fontWeight:'600', fontSize:'15px'}}>{item.writerNickname}</Typography>
+                            <Typography sx={{ml:'10px', fontSize:'13px'}}>{item.commentContent}</Typography>
+                            <Typography sx={{ml:'10px', fontSize:'13px'}}>{item.writerDate}</Typography>
+                        </Box>
                     </Box>
                 </Box>
-                <Divider sx={{mt:'10px'}} />
             </Box>
         </Box>
     )

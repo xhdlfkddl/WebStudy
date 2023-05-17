@@ -29,7 +29,7 @@ interface GetBoardResponseDto {
             "boardNumber": number,
             "commentContent": string,
             "commentNumber": number,
-            "writeDatetime": string,
+            "writerDate": string,
             "writerEmail": string,
             "writerNickname": string,
             "writerProfileUrl": string | null

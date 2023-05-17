@@ -41,6 +41,7 @@ public class CommentEntity {
 
         this.writerEmail = userEntity.getEmail();
         this.writerNickname = userEntity.getNickname();
+        this.writerProfileUrl = userEntity.getProfile();
         this.boardNumber = dto.getBoardNumber();
         this.writerDate = simpleDateFormat.format(now);
         this.commentContent = dto.getCommentContent();

@@ -259,8 +259,16 @@ public class BoardServiceImplements implements BoardService{
 
             List<CommentEntity> commentList = commentRepository.findByBoardNumber(boardNumber);
             List<LikyEntity> likeList = likyRepository.findByBoardNumber(boardNumber);
+            List<BoardHasProductEntity> boardHasProductList = boardHasProductRepository.findByBoardNumber(boardNumber);
+            List<ProductEntity> productList = new ArrayList<>();
 
-            data = new PostCommentResponseDto(boardEntity, likeList, commentList);
+            for (BoardHasProductEntity boardHasProductEntity : boardHasProductList) {
+                int productNumber = boardHasProductEntity.getProductNumber();
+                ProductEntity productEntity = productRepository.findById(productNumber);
+                productList.add(productEntity);
+            }
+
+            data = new PostCommentResponseDto(boardEntity, likeList, commentList, productList);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -296,8 +304,16 @@ public class BoardServiceImplements implements BoardService{
 
             List<CommentEntity> commentList = commentRepository.findByBoardNumber(boardNumber);
             List<LikyEntity> likeList = likyRepository.findByBoardNumber(boardNumber);
+            List<BoardHasProductEntity> boardHasProductList = boardHasProductRepository.findByBoardNumber(boardNumber);
+            List<ProductEntity> productList = new ArrayList<>();
 
-            data = new LikeResponseDto(boardEntity, likeList, commentList);
+            for (BoardHasProductEntity boardHasProductEntity : boardHasProductList) {
+                int productNumber = boardHasProductEntity.getProductNumber();
+                ProductEntity productEntity = productRepository.findById(productNumber);
+                productList.add(productEntity);
+            }
+
+            data = new LikeResponseDto(boardEntity, likeList, commentList, productList);
 
         } 
         catch (Exception exception) {

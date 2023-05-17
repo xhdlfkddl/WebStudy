@@ -1,4 +1,4 @@
-import { Avatar, Box, Divider, IconButton, Link, Typography } from "@mui/material"
+import { Avatar, Box, Divider, IconButton, Button, FormControl, Typography, OutlinedInput, Stack, Pagination } from "@mui/material"
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -7,30 +7,34 @@ import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { useEffect, useState } from "react";
-import CommentListItem from "src/components/CommentListItem";
+import { useEffect, useState, ChangeEvent } from "react";
 import { Board, Comment, Liky, Product, User } from "src/interfaces";
 import axios, { AxiosResponse } from "axios";
-import { GET_BOARD_URL, LIKE_URL, authorizationHeader } from "src/constants/api";
+import { GET_BOARD_URL, LIKE_URL, POST_COMMENT_URL, authorizationHeader } from "src/constants/api";
 import { useParams, useNavigate } from "react-router-dom";
-import { GetBoardResponseDto, LikeResponseDto } from "src/apis/response/board";
+import { GetBoardResponseDto, LikeResponseDto, PostCommendResponseDto } from "src/apis/response/board";
 import ResponseDto from "src/apis/response";
 import ProductListItem from "src/components/ProductListItem";
 import { useCookies } from "react-cookie";
-import { error } from "console";
-import { LikeDto } from "src/apis/request/board";
+import { LikeDto, PostCommentDto } from "src/apis/request/board";
 import { useUserStore } from "src/stores";
+import CommentListItem from "src/components/CommentListItem";
+import { usePagingHook } from "src/hooks";
+import { getPageCount } from "src/utils";
+import BoardImgListItem from "src/components/BoardImgListItem";
 
 export default function BoardDetailView() {
 
     const navigator = useNavigate();
 
+    const { listItem, viewListItem, setListItem, onPageHandler, pageNumber, COUNT } = usePagingHook(3);
     const [ cookies ] = useCookies();
     const [ board, setBoard ] = useState<Board | null>(null);
     const { user, setUser } = useUserStore();
+    const [ commentContent, setCommentContent ] = useState<string>('');
+    const [ commentBlankFlag, setCommentBlankFlag ] = useState<Boolean>(false);
     const [ writeUser, setWriteUser ] = useState<User>();
     const [ likyList, setLikyList ] = useState<Liky[]>([]);
-    const [ commentList, setCommentList ] = useState<Comment[]>([]);
     const [ productList, setProductList ] = useState<Product[]>([]);
 
     const [ liky, setLiky ] = useState<Boolean>(false);
@@ -40,11 +44,16 @@ export default function BoardDetailView() {
 
     const accessToken = cookies.accessToken;
 
+    const commentBlankCheck = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setCommentContent(event.target.value);
+        setCommentBlankFlag(true);
+    }
+
     const setBoardResponse = (data: GetBoardResponseDto) => {
         const { board, user, commentList, likeList, productList } = data;
         setBoard(board);
         setWriteUser(user);
-        setCommentList(commentList);
+        setListItem(commentList);
         setLikyList(likeList);
         setProductList(productList);
     }
@@ -65,6 +74,27 @@ export default function BoardDetailView() {
         .catch((error) => onLikeErrorHandler(error));
     }
 
+    const onPostCommentHandler = () => {
+        if (!accessToken) alert('로그인 후 사용해주세요.');
+
+        const data: PostCommentDto = {
+            boardNumber: parseInt(boardNumber as string),
+            commentContent
+        }
+
+        if (commentContent === null || commentContent.trim().length === 0) {
+            alert('댓글을 작성한 후 게시해주세요.')
+            setCommentContent('');
+            setCommentBlankFlag(false);
+            return;
+        }
+
+        axios.post(POST_COMMENT_URL, data, authorizationHeader(accessToken))
+        .then((response) => onPostCommentResponseHandler(response))
+        .catch((error) => onPostCommentErrorHandler(error))
+    }
+
+    // 
     const getBoardResponseHandler = (response: AxiosResponse<any, any>) => {
         const { data, message, result } = response.data as ResponseDto<GetBoardResponseDto>;
 
@@ -88,6 +118,19 @@ export default function BoardDetailView() {
         setBoardResponse(data);
     }
 
+    const onPostCommentResponseHandler = (response: AxiosResponse<any, any>) => {
+        const { result, message, data } = response.data as ResponseDto<PostCommendResponseDto>
+
+        if (!result || !data) {
+            alert(message);
+            return;
+        }
+
+        setBoardResponse(data);
+        setCommentContent('');
+    }
+
+    //
     const getBoardErrorHandler = (error: any) => {
         console.log(error.message);
     }
@@ -95,7 +138,12 @@ export default function BoardDetailView() {
     const onLikeErrorHandler = (error: any) => {
         console.log(error.message);
     }
+    
+    const onPostCommentErrorHandler = (error: any) => {
+        console.log(error.message);
+    }
 
+    //
     useEffect(() => {
         if(!boardNumber) return;
 
@@ -131,15 +179,10 @@ export default function BoardDetailView() {
                 </Box>
                 
                 <Box sx={{display:'flex', justifyContent:'center'}}>
-                    <IconButton sx={{top:'20px'}}>
-                        <ArrowBackIosNewIcon sx={{fontSize:'35px'}} />
-                    </IconButton>
-                    <Box sx={{width:'100%', height:'100%'}} component='img' src={board?.boardImgUrl1}/>
-                    { board?.boardImgUrl2 && (<Box sx={{width:'100%', height:'100%'}} component='img' src={board?.boardImgUrl2}/>) }
-                    { board?.boardImgUrl3 && (<Box sx={{width:'100%', height:'100%'}} component='img' src={board?.boardImgUrl3}/>) }
-                    <IconButton sx={{top:'20px'}}>
-                        <ArrowForwardIosIcon sx={{fontSize:'35px'}} />
-                    </IconButton>
+                    {
+                        board ? (<BoardImgListItem item={board} />) : (<></>)
+                    }
+                    
                 </Box>
                 
                 <Box height='60px' sx={{display:'flex', alignItems:'center'}}>
@@ -161,9 +204,38 @@ export default function BoardDetailView() {
 
                 <Box>
                     {
-                        openComment ? (<CommentListItem />) :
-                                      (<></>)
+                        openComment ? (
+                                    <Box sx={{display: 'flex', ml:'10px'}}>
+                                        <Box sx={{display:'flex', width:'490px'}}>
+                                            <Avatar sx={{width:'30px', height:'30px', mt:'4px'}} src="/broken-image.jpg" />
+                                            <FormControl size="small" fullWidth sx={{ml:'10px'}}>
+                                                <OutlinedInput fullWidth onChange={(event) => commentBlankCheck(event)} value={commentContent} placeholder="댓글 달기" />
+                                            </FormControl>
+                                            {
+                                                commentBlankFlag ? (<Button size="small" onClick={onPostCommentHandler}>게시</Button>) : 
+                                                                   (<></>)
+                                            }
+                                        </Box>
+                                        
+                                    </Box>
+                        ) : (<></>)
                     }
+                </Box>
+                <Box>
+                        { openComment ? (
+                                        <Box sx={{mt:'20px'}}>
+                                            <Box>
+                                                <Stack>
+                                                    {viewListItem.map((commentItem) => (<CommentListItem item={commentItem as Comment} />))}
+                                                </Stack>
+                                            </Box>
+                                            <Box sx={{ p: '20px 0px', display: 'flex', justifyContent: 'center' }}>
+                                                <Pagination page={pageNumber} count={getPageCount(listItem, COUNT)} onChange={(event, value) => onPageHandler(value)} />
+                                            </Box>
+                                            <Divider />
+                                        </Box>
+                                        )
+                    : (<></>) }
                 </Box>
                 
                 <Box sx={{display:'flex', justifyContent:'center', flexDirection:'column'}}>
@@ -174,7 +246,16 @@ export default function BoardDetailView() {
                     <Typography sx={{ml:'10px', color:'rgba(0, 0, 0, 0.4)', fontSize:'13px', mt:'10px'}}>{board?.boardWriteTime}</Typography>
                 </Box>
                 
-                <ProductListItem />
+
+                <Box>
+                    <Box sx={{pl:'10px', mt:'10px'}}>
+                        <Divider sx={{mb:'10px'}} />
+                        <Typography sx={{color:'rgba(0, 0, 0, 0.4)'}}>착용제품</Typography>
+                    </Box>
+                    <Stack>
+                        {productList.map((productList) => (<ProductListItem item={productList as Product} />))} 
+                    </Stack>
+                </Box>
 
                 <Box sx={{display:'flex', justifyContent:'center', flexDirection:'column', pl:'10px', mt:'20px', mb:'40px'}}>
                     <Divider sx={{mb:'10px'}} />

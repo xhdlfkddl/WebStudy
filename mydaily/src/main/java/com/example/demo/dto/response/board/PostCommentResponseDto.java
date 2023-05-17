@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.demo.entity.BoardEntity;
 import com.example.demo.entity.CommentEntity;
 import com.example.demo.entity.LikyEntity;
+import com.example.demo.entity.ProductEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,5 +21,7 @@ public class PostCommentResponseDto {
     private List<LikyEntity> likeList;
 
     private List<CommentEntity> commentList;
+
+    private List<ProductEntity> productList;
 
 }

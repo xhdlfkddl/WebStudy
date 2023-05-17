@@ -2,7 +2,7 @@ interface CommentInterface {
     commentNumber: number;
     writerEmail: string;
     boardNumber: number;
-    writeDatetime: string;
+    writerDate: string;
     commentContent: string;
     writerProfileUrl?: string | null;
     writerNickname: string;

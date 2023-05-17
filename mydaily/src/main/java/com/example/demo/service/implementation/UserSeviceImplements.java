@@ -10,6 +10,7 @@ import com.example.demo.dto.request.user.PatchProfileDto;
 import com.example.demo.dto.request.user.ValidateEmailDto;
 import com.example.demo.dto.request.user.ValidateNicknameDto;
 import com.example.demo.dto.response.ResponseDto;
+import com.example.demo.dto.response.user.GetUserResponseDto;
 import com.example.demo.dto.response.user.PatchProfileResponseDto;
 import com.example.demo.dto.response.user.ValidateEmailResponseDto;
 import com.example.demo.dto.response.user.ValidateNicknameResponseDto;
@@ -34,6 +35,23 @@ public class UserSeviceImplements implements UserService {
     private CommentRepository commentRepository;
     @Autowired
     private LikyRepository likyRepository;
+
+    @Override
+    public ResponseDto<GetUserResponseDto> getUser(String email) {
+
+        GetUserResponseDto data = null;
+
+        try {
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if(userEntity == null)
+            return ResponseDto.setFail(ResponseMessage.NOT_EXIST_USER);
+            data = new GetUserResponseDto(userEntity);
+        }catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(data);
+    }
 
     @Override
     public ResponseDto<PatchProfileResponseDto> patchProfile(String email, PatchProfileDto patchProfileDto) {
