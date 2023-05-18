@@ -257,7 +257,7 @@ public class BoardServiceImplements implements BoardService{
             boardEntity.increaseCommentCount();
             boardRepository.save(boardEntity);
 
-            List<CommentEntity> commentList = commentRepository.findByBoardNumber(boardNumber);
+            List<CommentEntity> commentList = commentRepository.findByBoardNumberOrderByWriterDateDesc(boardNumber);
             List<LikyEntity> likeList = likyRepository.findByBoardNumber(boardNumber);
             List<BoardHasProductEntity> boardHasProductList = boardHasProductRepository.findByBoardNumber(boardNumber);
             List<ProductEntity> productList = new ArrayList<>();
@@ -302,7 +302,7 @@ public class BoardServiceImplements implements BoardService{
             }
             boardRepository.save(boardEntity);
 
-            List<CommentEntity> commentList = commentRepository.findByBoardNumber(boardNumber);
+            List<CommentEntity> commentList = commentRepository.findByBoardNumberOrderByWriterDateDesc(boardNumber);
             List<LikyEntity> likeList = likyRepository.findByBoardNumber(boardNumber);
             List<BoardHasProductEntity> boardHasProductList = boardHasProductRepository.findByBoardNumber(boardNumber);
             List<ProductEntity> productList = new ArrayList<>();

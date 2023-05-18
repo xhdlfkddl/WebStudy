@@ -5,8 +5,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useEffect, useState, ChangeEvent } from "react";
 import { Board, Comment, Liky, Product, User } from "src/interfaces";
 import axios, { AxiosResponse } from "axios";

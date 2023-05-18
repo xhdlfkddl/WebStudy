@@ -89,7 +89,6 @@ public class BoardController {
         @PathVariable("boardNumber") int boardNumber
     ) {
         ResponseDto<GetBoardResponseDto> response = boardService.getBoard(boardNumber);
-        System.out.println("get_board");
         return response;
     }
 

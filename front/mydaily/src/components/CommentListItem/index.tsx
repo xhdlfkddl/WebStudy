@@ -9,14 +9,16 @@ interface Props {
 export default function CommentListItem({item}: Props ) {
 
     const [ time, setTime ] = useState<string>('');
-    const dateGap = Date.now() - Date.parse(item.writerDate);
-    const minute = Math.floor(dateGap / (1000 * 60));
-    const hour = Math.floor(minute / 60);
-    const day = Math.floor(hour/24);
-    const month = Math.floor(day/30);
-    const year = Math.floor(month/12);
-
+    
     const commentTime = () => {
+
+        const dateGap = Date.now() - Date.parse(item.writerDate);
+        const minute = Math.floor(dateGap / (1000 * 60));
+        const hour = Math.floor(minute / 60);
+        const day = Math.floor(hour/24);
+        const month = Math.floor(day/30);
+        const year = Math.floor(month/12);
+
         if( 0 <= minute && minute < 61) {
             setTime(minute + "분전");
             return;
@@ -24,8 +26,11 @@ export default function CommentListItem({item}: Props ) {
         if (0 < hour && hour < 24) {
             setTime(hour + "시간전")
             return;
-        } if ( 0 < day && day < 366) {
+        } if ( 0 < day && day < 31) {
             setTime(day + "일전");
+            return;
+        } if (0 < month && month < 12) {
+            setTime(month + "개월전");
             return;
         } if (1 <= year) {
             setTime(year + "년전");
@@ -36,7 +41,7 @@ export default function CommentListItem({item}: Props ) {
 
     useEffect (() => {
         commentTime();
-    },[])
+    },[item])
     
     return (
         <Box sx={{display: 'flex', ml:'10px', flexDirection:'column'}}>
@@ -47,7 +52,7 @@ export default function CommentListItem({item}: Props ) {
                         <Box sx={{display:'flex', mt:'4px'}}>
                             <Typography sx={{ml:'10px', fontWeight:'600', fontSize:'15px'}}>{item.writerNickname}</Typography>
                             <Typography sx={{ml:'10px', fontSize:'13px'}}>{item.commentContent}</Typography>
-                            <Typography sx={{ml:'10px', fontSize:'13px'}}>{item.writerDate}</Typography>
+                            <Typography sx={{ml:'10px', fontSize:'13px'}}>{time}</Typography>
                         </Box>
                     </Box>
                 </Box>
