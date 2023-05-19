@@ -12,6 +12,7 @@ export default function SearchTagListView () {
     const { tag }  = useParams();
     const [ tagList, setTagList ] = useState<GetSearchTagResponseDto[]>([]);
     const [ responseDto, setResponseDto ] = useState<GetSearchTagResponseDto>();
+    const [ searchResultFlag, setSearchResultFlag ] = useState<Boolean>(false);
 
     const getSearchList = () => {
         axios.get(SEARCH_TAG_URL(tag as string))
@@ -30,7 +31,7 @@ export default function SearchTagListView () {
 
         setTagList(data);
         data.map((items) => setResponseDto(items));
-        
+        setSearchResultFlag(true);
     }
 
     const getSearchListErrorHandler = (error: any) => {
@@ -56,7 +57,11 @@ export default function SearchTagListView () {
                         <Typography sx={{fontWeight:600}}>{tagList.length+"개의 게시물"}</Typography>
                     </Box>
                 </Box>
-                <ImgListItem item={tagList as GetSearchTagResponseDto[]} />
+                {
+                    searchResultFlag && null ? (<ImgListItem item={tagList as GetSearchTagResponseDto[]} />) : 
+                                        (<Box sx={{mt:'40px', display:'flex', justifyContent:'center'}}><Typography sx={{fontWeight:700}}>검색결과가 없습니다.</Typography></Box>)
+                }
+                
             </Box>
         </Box>
     )
