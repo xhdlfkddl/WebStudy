@@ -16,3 +16,4 @@ export const LIKE_URL = `${HOST}api/board/like`;
 
 
 export const GET_BOARD_URL = (boardNumber: string) => `${HOST}api/board/${boardNumber}`;
+export const SEARCH_TAG_URL = (tag: string) => `${HOST}api/board/search-tag/${tag}`;

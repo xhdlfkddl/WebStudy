@@ -160,7 +160,7 @@ export default function BoardDetailView() {
 
                 <Box height='60px' sx={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
                     <Box sx={{display: "flex", ml:'10px'}}>
-                        <Avatar src="/broken-image.jpg" />
+                        <Avatar src={writeUser?.profile ? writeUser.profile : "/broken-image.jpg"} />
                         <Box sx={{display:'flex', flexDirection:'column', ml:'15px'}}>
                             <Typography sx={{fontWeight:'700', fontSize:'15px'}}>{board?.writerNickname}</Typography>
                             <Box sx={{display:'flex'}}>
@@ -238,6 +238,11 @@ export default function BoardDetailView() {
                 
                 <Box sx={{display:'flex', justifyContent:'center', flexDirection:'column'}}>
                     <Box sx={{display:'flex', mt:'10px'}}>
+                        <Typography sx={{ml:'10px', fontWeight:'400'}}>좋아요</Typography>
+                        <Typography sx={{ml:'7px', fontWeight:'700'}}>{likyList.length}</Typography>
+                        <Typography sx={{fontWeight:'400'}}>개</Typography>
+                    </Box>
+                    <Box sx={{display:'flex', mt:'5px'}}>
                         <Typography sx={{ml:'10px', fontWeight:'700'}}>{board?.writerNickname}</Typography>
                         <Typography sx={{ml:'10px'}}>{board?.boardContent}</Typography>
                     </Box>
