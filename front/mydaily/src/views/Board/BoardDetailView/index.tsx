@@ -1,16 +1,16 @@
-import { Avatar, Box, Divider, IconButton, Button, FormControl, Typography, OutlinedInput, Stack, Pagination } from "@mui/material"
+import { Avatar, Box, Divider, IconButton, Button, FormControl, Typography, OutlinedInput, Stack, Pagination, Menu, MenuItem } from "@mui/material"
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
-import { useEffect, useState, ChangeEvent } from "react";
+import { useEffect, useState, ChangeEvent, MouseEvent } from "react";
 import { Board, Comment, Liky, Product, User } from "src/interfaces";
 import axios, { AxiosResponse } from "axios";
-import { GET_BOARD_URL, LIKE_URL, POST_COMMENT_URL, authorizationHeader } from "src/constants/api";
+import { DELETE_BOARD_URL, GET_BOARD_URL, LIKE_URL, POST_COMMENT_URL, authorizationHeader } from "src/constants/api";
 import { useParams, useNavigate } from "react-router-dom";
-import { GetBoardResponseDto, LikeResponseDto, PostCommendResponseDto } from "src/apis/response/board";
+import { DeleteBoardResponseDto, GetBoardResponseDto, LikeResponseDto, PostCommendResponseDto } from "src/apis/response/board";
 import ResponseDto from "src/apis/response";
 import ProductListItem from "src/components/ProductListItem";
 import { useCookies } from "react-cookie";
@@ -28,7 +28,7 @@ export default function BoardDetailView() {
     const { listItem, viewListItem, setListItem, onPageHandler, pageNumber, COUNT } = usePagingHook(3);
     const [ cookies ] = useCookies();
     const [ board, setBoard ] = useState<Board | null>(null);
-    const { user, setUser } = useUserStore();
+    const { user } = useUserStore();
     const [ commentContent, setCommentContent ] = useState<string>('');
     const [ commentBlankFlag, setCommentBlankFlag ] = useState<Boolean>(false);
     const [ writeUser, setWriteUser ] = useState<User>();
@@ -37,6 +37,9 @@ export default function BoardDetailView() {
 
     const [ liky, setLiky ] = useState<Boolean>(false);
     const [ openComment, setOpenComment ] = useState<Boolean>(false);
+    const [ anchorElement, setAnchorElement ] = useState<null | HTMLElement>(null);
+    const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
+
 
     const { boardNumber } = useParams();
 
@@ -92,6 +95,29 @@ export default function BoardDetailView() {
         .catch((error) => onPostCommentErrorHandler(error))
     }
 
+    const onMenuHandler = (event: MouseEvent<HTMLButtonElement>) => {
+        setAnchorElement(event.currentTarget);
+        setMenuOpen(true);
+    }
+
+    const onMenuCloseHandler = () => {
+        setAnchorElement(null);
+        setMenuOpen(false);
+    }
+
+    const onDeleteHandler = () => {
+        if (!user) {
+            alert('로그인이 필요합니다.'); return;
+        }
+        if (user?.email !== writeUser?.email) {
+            alert('권한이 없습니다.'); return;
+        }
+
+        axios.delete(DELETE_BOARD_URL(boardNumber as string), authorizationHeader(accessToken as string))
+        .then((response) => onDeleteResponseHandler(response))
+        .catch((error) => onDeleteErrorHandler(error));
+    }
+
     // 
     const getBoardResponseHandler = (response: AxiosResponse<any, any>) => {
         const { data, message, result } = response.data as ResponseDto<GetBoardResponseDto>;
@@ -128,6 +154,20 @@ export default function BoardDetailView() {
         setCommentContent('');
     }
 
+    const onDeleteResponseHandler = (response: AxiosResponse<any, any>) => {
+        const { result, message, data } = response.data as ResponseDto<DeleteBoardResponseDto>;
+
+        if (!result || !data) {
+            alert(message);
+            return;
+        }
+
+        if (data) {
+            alert('삭제가 완료되었습니다.');
+            navigator('/myPage');
+        }
+    }
+
     //
     const getBoardErrorHandler = (error: any) => {
         console.log(error.message);
@@ -138,6 +178,10 @@ export default function BoardDetailView() {
     }
     
     const onPostCommentErrorHandler = (error: any) => {
+        console.log(error.message);
+    }
+    
+    const onDeleteErrorHandler = (error: any) => {
         console.log(error.message);
     }
 
@@ -170,16 +214,20 @@ export default function BoardDetailView() {
                         </Box>
                     </Box>
                     <Box>
-                        <IconButton>
-                            <MoreVertIcon />
-                        </IconButton>
+                            {
+                                user?.email === writeUser?.email ? 
+                                (<IconButton onClick={(event) => onMenuHandler(event)}><MoreVertIcon /></IconButton>) : (<></>) 
+                            }
+                        <Menu anchorEl={anchorElement} open={menuOpen} onClose={onMenuCloseHandler}>
+                            <MenuItem sx={{ p: '10px 59px', opacity: 0.5 }} onClick={() => navigator('/')}>수정</MenuItem>
+                            <Divider />
+                            <MenuItem sx={{ p: '10px 59px', color: '#ff0000', opacity: 0.5 }} onClick={() => onDeleteHandler()}>삭제</MenuItem>
+                        </Menu>
                     </Box>
                 </Box>
                 
                 <Box sx={{display:'flex', justifyContent:'center'}}>
-                    {
-                        board ? (<BoardImgListItem item={board} />) : (<></>)
-                    }
+                    { board ? (<BoardImgListItem item={board} />) : (<></>) }
                     
                 </Box>
                 

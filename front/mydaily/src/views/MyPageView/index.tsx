@@ -56,13 +56,6 @@ export default function MyPageView() {
 
         setMyList(data);
 
-        if (user?.gender === '남') {
-            setGenderFlag(true);
-        } else if (user?.gender === '여') {
-            setGenderFlag(false);
-        } else {
-            setGenderFlag(null);
-        }
     }
 
     const getMyLikeListResponseHandler = (response: AxiosResponse<any, any>) => {
@@ -106,10 +99,7 @@ export default function MyPageView() {
                         <Box sx={{display:'flex', mt:'5px'}}>
                             <Typography sx={{mr:'10px'}}>{user?.height}</Typography>
                             <Typography sx={{mr:'10px'}}>{user?.weight}</Typography>
-                            {
-                                genderFlag ? (<MaleIcon sx={{color:'blue'}} />) : (<FemaleIcon sx={{color:'pink'}} />)
-                            }
-                            
+                            { user?.gender === '남' ? (<MaleIcon sx={{color:'blue'}} />) : (<FemaleIcon sx={{color:'pink'}} />) }
                         </Box>
                     </Box>
                 </Box>

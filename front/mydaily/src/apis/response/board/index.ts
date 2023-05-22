@@ -4,5 +4,6 @@ import PostCommendResponseDto from "./Post-commend.response.dto";
 import GetSearchTagResponseDto from "./Get-search-tag.response.dto";
 import GetMyListResponseDto from "./Get-my-list.response.dto";
 import GetMyLikeListResponseDto from "./Get-my-like-list.Response.dto";
+import DeleteBoardResponseDto from "./Delete-board.response.dto";
 
-export type { GetBoardResponseDto, LikeResponseDto, PostCommendResponseDto, GetSearchTagResponseDto, GetMyListResponseDto, GetMyLikeListResponseDto };
+export type { GetBoardResponseDto, LikeResponseDto, PostCommendResponseDto, GetSearchTagResponseDto, GetMyListResponseDto, GetMyLikeListResponseDto, DeleteBoardResponseDto };
