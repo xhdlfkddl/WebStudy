@@ -1,9 +1,9 @@
 import { Avatar, Box, ImageList, ImageListItem, Typography, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { GetSearchTagResponseDto } from "src/apis/response/board";
+import { GetSearchTagResponseDto, GetMyListResponseDto, GetMyLikeListResponseDto } from "src/apis/response/board";
 
 interface Props {
-    item: GetSearchTagResponseDto[];
+    item: GetSearchTagResponseDto[] | GetMyListResponseDto[] | GetMyLikeListResponseDto[];
 }
 
 export default function ImgListItem({item}: Props) {

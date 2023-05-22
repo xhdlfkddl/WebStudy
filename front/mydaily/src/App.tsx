@@ -11,6 +11,7 @@ import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import { useUserStore } from './stores';
 import SearchTagListView from './views/Board/SearchTagListView';
+import MyPageView from './views/MyPageView';
 
 //# Router 설계 
 //? 1. 'main' path 작성 : '/'
@@ -61,6 +62,7 @@ function App() {
     <Routes>
       <Route path='/' element={(<MainContent />)} />
       <Route path='/auth' element={(<AuthenticationView />)} />
+      <Route path='/mypage' element={(<MyPageView />)} />
       <Route path='/board/search-tag/:tag' element={(<SearchTagListView />)} />
       <Route path='/board/:boardNumber' element={(<BoardDetailView />)} />
     </Routes>

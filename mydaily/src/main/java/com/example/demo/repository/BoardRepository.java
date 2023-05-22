@@ -11,5 +11,6 @@ import com.example.demo.entity.BoardEntity;
 public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
     public BoardEntity findByBoardNumber(int boardNumber);
     public List<BoardEntity> findByWriterEmail(String writerEmail);
+    public List<BoardEntity> findByWriterEmailOrderByBoardWriteTimeDesc(String email);
     public List<BoardEntity> findByTag(String tag);
 }

@@ -20,6 +20,7 @@ import com.example.demo.dto.response.board.MyLikeListResponseDto;
 import com.example.demo.dto.response.board.PatchBoardResponseDto;
 import com.example.demo.dto.response.board.PostBoardResponseDto;
 import com.example.demo.dto.response.board.PostCommentResponseDto;
+import com.example.demo.dto.response.board.PostMyListResponseDto;
 import com.example.demo.entity.BoardEntity;
 import com.example.demo.entity.BoardHasProductEntity;
 import com.example.demo.entity.CommentEntity;
@@ -317,6 +318,20 @@ public class BoardServiceImplements implements BoardService{
 
         } 
         catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(data);
+    }
+
+    @Override
+    public ResponseDto<List<PostMyListResponseDto>> getMyList(String email) {
+        List<PostMyListResponseDto> data = null;
+
+        try {
+            List<BoardEntity> boardList = boardRepository.findByWriterEmailOrderByBoardWriteTimeDesc(email);
+            data = PostMyListResponseDto.copyList(boardList);
+        }catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
         }

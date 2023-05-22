@@ -17,6 +17,7 @@ import com.example.demo.dto.response.board.MyLikeListResponseDto;
 import com.example.demo.dto.response.board.PatchBoardResponseDto;
 import com.example.demo.dto.response.board.PostBoardResponseDto;
 import com.example.demo.dto.response.board.PostCommentResponseDto;
+import com.example.demo.dto.response.board.PostMyListResponseDto;
 
 @Service
 public interface BoardService {
@@ -28,4 +29,5 @@ public interface BoardService {
     public ResponseDto<DeleteBoardResponseDto> deleteBoard(String email, int boardNumber);
     public ResponseDto<PostCommentResponseDto> postComment(String email, PostCommentDto dto);
     public ResponseDto<LikeResponseDto> like(String email, LikeDto dto);
+    public ResponseDto<List<PostMyListResponseDto>> getMyList(String email);
 }

@@ -25,6 +25,7 @@ import com.example.demo.dto.response.board.MyLikeListResponseDto;
 import com.example.demo.dto.response.board.PatchBoardResponseDto;
 import com.example.demo.dto.response.board.PostBoardResponseDto;
 import com.example.demo.dto.response.board.PostCommentResponseDto;
+import com.example.demo.dto.response.board.PostMyListResponseDto;
 import com.example.demo.dto.response.board.DeleteBoardResponseDto;
 import com.example.demo.dto.response.board.GetBoardResponseDto;
 import com.example.demo.dto.response.board.GetSearchTagResponseDto;
@@ -37,9 +38,10 @@ public class BoardController {
 
     private final String POST_BOARD = "";
     private final String PATCH_BOARD = "";
-    private final String POST_LIKE_LIST = "/like-list";
+    private final String GET_LIKE_LIST = "/like-list";
 
     private final String GET_BOARD = "/{boardNumber}";
+    private final String GET_MY_LIST ="/my-list";
     private final String GET_SEARCH_TAG = "/search-tag/{tag}";
 
     private final String DELETE_BOARD = "/{boardNumber}";
@@ -62,7 +64,7 @@ public class BoardController {
         return response;
     }
     
-    @PostMapping(POST_LIKE_LIST)
+    @GetMapping(GET_LIKE_LIST)
     public ResponseDto<List<MyLikeListResponseDto>> myLikeList(@AuthenticationPrincipal String email) {
         ResponseDto<List<MyLikeListResponseDto>> response = boardService.myLikeList(email);
         return response;
@@ -84,6 +86,14 @@ public class BoardController {
     }
 
     //?
+    @GetMapping(GET_MY_LIST)
+    public ResponseDto<List<PostMyListResponseDto>> getMyList(
+        @AuthenticationPrincipal String email
+    ) {
+        ResponseDto<List<PostMyListResponseDto>> response = boardService.getMyList(email);
+        return response;
+    }
+
     @GetMapping(GET_BOARD)
     public ResponseDto<GetBoardResponseDto> getBoard(
         @PathVariable("boardNumber") int boardNumber

@@ -11,7 +11,7 @@ export default function SearchTagListView () {
 
     const { tag }  = useParams();
     const [ tagList, setTagList ] = useState<GetSearchTagResponseDto[]>([]);
-    const [ responseDto, setResponseDto ] = useState<GetSearchTagResponseDto>();
+    const [ responseData, setResponseData ] = useState<GetSearchTagResponseDto>();
     const [ searchResultFlag, setSearchResultFlag ] = useState<Boolean>(false);
 
     const getSearchList = () => {
@@ -30,7 +30,7 @@ export default function SearchTagListView () {
         }
 
         setTagList(data);
-        data.map((items) => setResponseDto(items));
+        data.map((items) => setResponseData(items));
         setSearchResultFlag(true);
     }
 
@@ -51,7 +51,7 @@ export default function SearchTagListView () {
                 <Divider />
                 <Box sx={{mt:'20px', display:'flex', justifyContent:'space-around'}}>
                     <Box>
-                        <Avatar sx={{width: '130px', height: '130px'}} src={responseDto?.boardImgUrl1 ? responseDto.boardImgUrl1 : ''} />
+                        <Avatar sx={{width: '130px', height: '130px'}} src={responseData?.boardImgUrl1 ? responseData.boardImgUrl1 : ''} />
                     </Box>
                     <Box sx={{width:'150px', height:'150px', display:'flex', flexDirection:'column', justifyContent:'center'}}>
                         <Typography sx={{fontWeight:600}}>{tagList.length+"개의 게시물"}</Typography>
