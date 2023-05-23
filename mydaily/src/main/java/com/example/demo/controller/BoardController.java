@@ -28,7 +28,9 @@ import com.example.demo.dto.response.board.PostCommentResponseDto;
 import com.example.demo.dto.response.board.PostMyListResponseDto;
 import com.example.demo.dto.response.board.DeleteBoardResponseDto;
 import com.example.demo.dto.response.board.GetBoardResponseDto;
+import com.example.demo.dto.response.board.GetListResponseDto;
 import com.example.demo.dto.response.board.GetSearchTagResponseDto;
+import com.example.demo.dto.response.board.GetTop3ListResponseDto;
 import com.example.demo.dto.response.board.LikeResponseDto;
 import com.example.demo.service.BoardService;
 
@@ -43,6 +45,8 @@ public class BoardController {
     private final String GET_BOARD = "/{boardNumber}";
     private final String GET_MY_LIST ="/my-list";
     private final String GET_SEARCH_TAG = "/search-tag/{tag}";
+    private final String GET_LIST = "/list";
+    private final String GET_TOP3_LIST = "/top3-list";
 
     private final String DELETE_BOARD = "/{boardNumber}";
 
@@ -117,6 +121,18 @@ public class BoardController {
         @Valid @RequestBody LikeDto requestBody
     ) {
         ResponseDto<LikeResponseDto> response = boardService.like(email, requestBody);
+        return response;
+    }
+
+    @GetMapping(GET_LIST)
+    public ResponseDto<List<GetListResponseDto>> getList() {
+        ResponseDto<List<GetListResponseDto>> response = boardService.getList();
+        return response;
+    }
+
+    @GetMapping(GET_TOP3_LIST)
+    public ResponseDto<List<GetTop3ListResponseDto>> getTop3List() {
+        ResponseDto<List<GetTop3ListResponseDto>> response = boardService.getTop3List();
         return response;
     }
 }

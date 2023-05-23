@@ -1,6 +1,10 @@
 package com.example.demo.service.implementation;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +18,9 @@ import com.example.demo.dto.request.board.PostCommentDto;
 import com.example.demo.dto.response.ResponseDto;
 import com.example.demo.dto.response.board.DeleteBoardResponseDto;
 import com.example.demo.dto.response.board.GetBoardResponseDto;
+import com.example.demo.dto.response.board.GetListResponseDto;
 import com.example.demo.dto.response.board.GetSearchTagResponseDto;
+import com.example.demo.dto.response.board.GetTop3ListResponseDto;
 import com.example.demo.dto.response.board.LikeResponseDto;
 import com.example.demo.dto.response.board.MyLikeListResponseDto;
 import com.example.demo.dto.response.board.PatchBoardResponseDto;
@@ -336,6 +342,42 @@ public class BoardServiceImplements implements BoardService{
             return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
         }
         return ResponseDto.setSuccess(data);
+    }
+
+    @Override
+    public ResponseDto<List<GetListResponseDto>> getList() {
+        List<GetListResponseDto> data = null;
+
+        try{
+            List<BoardEntity> boardEntityList = boardRepository.findByOrderByBoardWriteTimeDesc();
+            data = GetListResponseDto.copyList(boardEntityList);
+
+        }catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+        return ResponseDto.setSuccess(data);
+    }
+
+    @Override
+    public ResponseDto<List<GetTop3ListResponseDto>> getTop3List() {
+        
+        List<GetTop3ListResponseDto> data = null;
+        Date aWeekAgoDate = Date.from(Instant.now().minus(7, ChronoUnit.DAYS));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String aWeekAgo = simpleDateFormat.format(aWeekAgoDate);
+    
+        try {
+            List<BoardEntity> boardList = boardRepository.findTop3ByBoardWriteTimeGreaterThanOrderByLikeCountDesc(aWeekAgo);
+            data = GetTop3ListResponseDto.copyList(boardList);
+    
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+    
+        return ResponseDto.setSuccess(data);
+    
     }
     
 }
