@@ -30,6 +30,7 @@ import com.example.demo.dto.response.board.DeleteBoardResponseDto;
 import com.example.demo.dto.response.board.GetBoardResponseDto;
 import com.example.demo.dto.response.board.GetListResponseDto;
 import com.example.demo.dto.response.board.GetSearchTagResponseDto;
+import com.example.demo.dto.response.board.GetTop15SearchWordResponseDto;
 import com.example.demo.dto.response.board.GetTop3ListResponseDto;
 import com.example.demo.dto.response.board.LikeResponseDto;
 import com.example.demo.service.BoardService;
@@ -47,6 +48,7 @@ public class BoardController {
     private final String GET_SEARCH_TAG = "/search-tag/{tag}";
     private final String GET_LIST = "/list";
     private final String GET_TOP3_LIST = "/top3-list";
+    private final String GET_TOP15_SEARCH_WORD = "/top15-search-word";
 
     private final String DELETE_BOARD = "/{boardNumber}";
 
@@ -133,6 +135,12 @@ public class BoardController {
     @GetMapping(GET_TOP3_LIST)
     public ResponseDto<List<GetTop3ListResponseDto>> getTop3List() {
         ResponseDto<List<GetTop3ListResponseDto>> response = boardService.getTop3List();
+        return response;
+    }
+
+    @GetMapping(GET_TOP15_SEARCH_WORD)
+    public ResponseDto<GetTop15SearchWordResponseDto> getTop15SearchWord() {
+        ResponseDto<GetTop15SearchWordResponseDto> response = boardService.getTop15SearchWord();
         return response;
     }
 }

@@ -9,6 +9,9 @@ export const SIGN_IN_URL = `${HOST}auth/sign-in`;
 
 export const GET_USER = `${HOST}api/user/`;
 export const GET_MY_LIST = `${HOST}api/board/my-list`;
+export const GET_LIST = `${HOST}api/board/list`;
+export const GET_TOP_3_LIST = `${HOST}api/board/top3-list`;
+export const GET_TOP_15_SEARCH_TAG = `${HOST}api/board/top15-search-word`;
 export const GET_MY_LIKE_LIST = `${HOST}api/board/like-list`;
 export const VALIDATE_EMAIL_URL = `${HOST}api/user/validate/email`;
 export const VALIDATE_NICKNAME_URL = `${HOST}api/user/validate/nickname`;

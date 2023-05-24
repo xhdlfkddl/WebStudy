@@ -13,6 +13,7 @@ import com.example.demo.dto.response.board.DeleteBoardResponseDto;
 import com.example.demo.dto.response.board.GetBoardResponseDto;
 import com.example.demo.dto.response.board.GetListResponseDto;
 import com.example.demo.dto.response.board.GetSearchTagResponseDto;
+import com.example.demo.dto.response.board.GetTop15SearchWordResponseDto;
 import com.example.demo.dto.response.board.GetTop3ListResponseDto;
 import com.example.demo.dto.response.board.LikeResponseDto;
 import com.example.demo.dto.response.board.MyLikeListResponseDto;
@@ -34,4 +35,5 @@ public interface BoardService {
     public ResponseDto<List<PostMyListResponseDto>> getMyList(String email);
     public ResponseDto<List<GetTop3ListResponseDto>> getTop3List();
     public ResponseDto<List<GetListResponseDto>> getList();
+    public ResponseDto<GetTop15SearchWordResponseDto> getTop15SearchWord();
 }

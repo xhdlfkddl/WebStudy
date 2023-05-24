@@ -40,10 +40,11 @@ export default function BoardDetailView() {
     const [ anchorElement, setAnchorElement ] = useState<null | HTMLElement>(null);
     const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
 
-
     const { boardNumber } = useParams();
 
     const accessToken = cookies.accessToken;
+
+    let isLoad = false;
 
     const commentBlankCheck = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setCommentContent(event.target.value);
@@ -187,6 +188,11 @@ export default function BoardDetailView() {
 
     //
     useEffect(() => {
+        if (!isLoad) {
+            isLoad = true;
+            return;
+        }
+
         if(!boardNumber) return;
 
         getBoard();

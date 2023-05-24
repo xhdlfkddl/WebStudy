@@ -1,9 +1,9 @@
 import { Avatar, Box, ImageList, ImageListItem, Typography, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { GetSearchTagResponseDto, GetMyListResponseDto, GetMyLikeListResponseDto } from "src/apis/response/board";
+import { GetSearchTagResponseDto, GetMyListResponseDto, GetMyLikeListResponseDto, GetListResponseDto } from "src/apis/response/board";
 
 interface Props {
-    item: GetSearchTagResponseDto[] | GetMyListResponseDto[] | GetMyLikeListResponseDto[];
+    item: GetSearchTagResponseDto[] | GetMyListResponseDto[] | GetMyLikeListResponseDto[] | GetListResponseDto[];
 }
 
 export default function ImgListItem({item}: Props) {
@@ -24,7 +24,7 @@ export default function ImgListItem({item}: Props) {
                         loading="lazy"
                         onClick={() => navigator(`/board/${item.boardNumber}`)}
                         />
-                    </ImageListItem>
+                </ImageListItem>
                 ))
             }
             </ImageList>

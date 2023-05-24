@@ -13,8 +13,11 @@ import ResponseDto from "src/apis/response";
 import ImgListItem from "src/components/ImgListItem";
 import { useCookies } from "react-cookie";
 import { useUserStore } from "src/stores";
+import { useNavigate } from "react-router-dom";
 
 export default function MyPageView() {
+
+    const navigator = useNavigate();
 
     const [cookie] = useCookies();
     const { user } = useUserStore();
@@ -23,6 +26,8 @@ export default function MyPageView() {
     const [ myLikeList, setMyLikeList ] = useState<GetMyLikeListResponseDto[]>([]);
     const [ genderFlag, setGenderFlag ] = useState<Boolean | null>(null);
     const [ viewFlag, setViewFlag ] = useState<number>(1);
+
+    let isLoad = false;
     
     const getMyList = () => {
         axios.get(GET_MY_LIST, authorizationHeader(accessToken as string))
@@ -39,11 +44,13 @@ export default function MyPageView() {
     const onViewMyList = () => {
         setViewFlag(1);
         getMyList();
+        return;
     }
     
     const onViewMyLikeList = () => {
         setViewFlag(2);
         getMyLikeList();
+        return;
     }
     
     const getMyListResponseHandler = (response: AxiosResponse<any, any>) => {
@@ -78,6 +85,15 @@ export default function MyPageView() {
     }
     
     useEffect(() => {
+        if (!isLoad) {
+            isLoad = true;
+            return;
+        }
+
+        if (!accessToken) {
+            alert('로그인 후 사용 가능합니다.');
+            navigator('/');
+        }
         getMyList();
     },[])
     

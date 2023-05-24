@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetListResponseDto {
     private int boardNumber;
-    private String boardImgUrl;
+    private String boardImgUrl1;
 
     //메인에 게시물 첫번째 사진만 가지고 올 것.
     public GetListResponseDto(BoardEntity boardEntity) {
         this.boardNumber = boardEntity.getBoardNumber();
-        this.boardImgUrl = boardEntity.getBoardImgUrl1();
+        this.boardImgUrl1 = boardEntity.getBoardImgUrl1();
     }
 
     public static List<GetListResponseDto> copyList(List<BoardEntity> boardEntityList) {

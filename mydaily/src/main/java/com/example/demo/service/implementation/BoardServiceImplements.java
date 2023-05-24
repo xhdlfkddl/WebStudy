@@ -20,6 +20,7 @@ import com.example.demo.dto.response.board.DeleteBoardResponseDto;
 import com.example.demo.dto.response.board.GetBoardResponseDto;
 import com.example.demo.dto.response.board.GetListResponseDto;
 import com.example.demo.dto.response.board.GetSearchTagResponseDto;
+import com.example.demo.dto.response.board.GetTop15SearchWordResponseDto;
 import com.example.demo.dto.response.board.GetTop3ListResponseDto;
 import com.example.demo.dto.response.board.LikeResponseDto;
 import com.example.demo.dto.response.board.MyLikeListResponseDto;
@@ -32,12 +33,15 @@ import com.example.demo.entity.BoardHasProductEntity;
 import com.example.demo.entity.CommentEntity;
 import com.example.demo.entity.LikyEntity;
 import com.example.demo.entity.ProductEntity;
+import com.example.demo.entity.SearchWordLogEntity;
 import com.example.demo.entity.UserEntity;
+import com.example.demo.entity.resultSet.SearchWordResultSet;
 import com.example.demo.repository.BoardHasProductRepository;
 import com.example.demo.repository.BoardRepository;
 import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.LikyRepository;
 import com.example.demo.repository.ProductRepository;
+import com.example.demo.repository.SearchWordLogRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.BoardService;
 
@@ -50,6 +54,7 @@ public class BoardServiceImplements implements BoardService{
     @Autowired CommentRepository commentRepository;
     @Autowired LikyRepository likyRepository;
     @Autowired BoardHasProductRepository boardHasProductRepository;
+    @Autowired SearchWordLogRepository searchWordLogRepository;
 
     //? 게시물 작성
     @Override
@@ -171,6 +176,8 @@ public class BoardServiceImplements implements BoardService{
             return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
         }
 
+        SearchWordLogEntity searchWordLogEntity = new SearchWordLogEntity(tag);
+        searchWordLogRepository.save(searchWordLogEntity);
         return ResponseDto.setSuccess(data);
     }
 
@@ -380,4 +387,18 @@ public class BoardServiceImplements implements BoardService{
     
     }
     
+    @Override
+    public ResponseDto<GetTop15SearchWordResponseDto> getTop15SearchWord() {
+        GetTop15SearchWordResponseDto data = null;
+        
+        try {
+            List<SearchWordResultSet> searchWordList = searchWordLogRepository.findTop15();
+            data = GetTop15SearchWordResponseDto.copyList(searchWordList);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+        
+        return ResponseDto.setSuccess(data);
+    }
 }

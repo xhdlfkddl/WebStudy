@@ -20,4 +20,8 @@ public class SearchWordLogEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int sequence;
     private String searchWord;
+
+    public SearchWordLogEntity(String searchWord) {
+        this.searchWord = searchWord;
+    }
 }
